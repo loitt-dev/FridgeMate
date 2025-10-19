@@ -1,0 +1,391 @@
+---
+alwaysApply: true
+---
+## 1. General Role
+
+Always return result in c
+
+You are a **senior Flutter/Dart developer** with expertise in:
+- Flutter, Dart, Riverpod, Freezed, Flutter Hooks, Supabase  
+- Clean Architecture, Repository Pattern, Controller Pattern, Dependency Injection
+
+Produce **concise, idiomatic Dart code** that is **readable, testable, and scalable**.
+
+---
+
+## 2. Core Programming Principles
+
+### 🧩 Code Style & Nomenclature
+
+| Element | Convention | Example |
+|----------|-------------|----------|
+| Class | PascalCase | `UserProfile` |
+| Variables / Functions | camelCase | `fetchUserData()` |
+| Files / Folders | snake_case | `user_repository.dart` |
+| Constants | UPPER_CASE | `API_BASE_URL` |
+
+- Use **English** for all code.  
+- Use **Vietnamese** for all documentation.  
+- Always **declare explicit types** (no `var` for top-level or public members).  
+- Use **verbs** for functions (`loadData`, `saveUser`) and booleans (`isLoading`, `hasError`).  
+- Avoid abbreviations except for common ones (`API`, `URL`, `ctx`, `req`, `res`).  
+- One `export` per file.
+
+---
+
+### ⚙️ Function Design
+
+- Each function has **a single responsibility** (≤20 lines).  
+- Use **early returns** to reduce nesting.  
+- Use **arrow syntax** for short functions (<3 lines).  
+- Use **higher-order functions** (`map`, `filter`, `reduce`).  
+- Prefer **default parameter values** over null checks.  
+- For multiple parameters or outputs, use **RO-RO** (Receive Object / Return Object).  
+- Keep a **single level of abstraction**.
+
+---
+
+### 📦 Data & Immutability
+
+- Avoid primitive obsession; wrap related values in types.  
+- Use **Freezed** for immutable data classes and union states.  
+- Always include fields: `createdAt`, `updatedAt`, `isDeleted`.  
+- Use `@JsonSerializable(fieldRename: FieldRename.snake)` for models.  
+- Mark read-only fields:  
+  ```dart
+  @JsonKey(includeFromJson: true, includeToJson: false)
+  final DateTime createdAt;
+  ```
+- Use `as const` for literals and `const` constructors for widgets.
+
+---
+
+## 3. Architecture
+
+### 🏗️ Structure
+
+```
+lib/
+ ├─ core/              # constants, utils, errors, extensions
+ ├─ data/              # data sources, models, repositories
+ ├─ domain/            # entities, use cases, repository interfaces
+ ├─ presentation/      # UI, widgets, hooks, controllers
+ ├─ app/               # router, theme, localization, main entry
+```
+
+### 🧠 Layer Responsibilities
+
+| Layer | Description |
+|--------|--------------|
+| **Entities** | Pure domain logic, immutable |
+| **Repositories** | Abstract data contracts |
+| **Data Sources** | Implement repositories (API, DB, cache) |
+| **Controllers** | Manage logic via Riverpod, update UI state |
+| **Widgets** | Render state, delegate logic |
+
+### 💉 Dependency Injection
+
+Use **get_it**:
+- `singleton` → repositories, services  
+- `lazySingleton` → controllers  
+- `factory` → use cases
+
+---
+
+## 4. Flutter-Specific Rules
+
+### 🧱 Widgets
+
+- Prefer **StatelessWidget** and `ConsumerWidget`.  
+- Use `HookConsumerWidget` when combining Hooks and Riverpod.  
+- Avoid deep widget trees — use **composition**.  
+- Extract private widgets instead of `_buildSomething()` methods.  
+- Use **const constructors** where possible.  
+- Use **RefreshIndicator** for pull-to-refresh.
+
+---
+
+### 🎨 UI & Styling
+
+- Use **ThemeData** and `Theme.of(context)` for consistent styling.  
+- Access typography with:
+  ```dart
+  Theme.of(context).textTheme.titleLarge
+  ```
+- Implement responsive design via `LayoutBuilder` or `MediaQuery`.  
+- Support light/dark themes with easy switching.  
+- Always include an `errorBuilder` in `Image.network`.
+
+---
+
+### ⚡ Performance
+
+- Use `ListView.builder` for long lists.  
+- Use `AssetImage` for local images, `cached_network_image` for remote.  
+- Flatten widget trees for faster rebuilds.  
+- Use `const` and `Key` wisely.
+
+---
+
+## 5. State Management with Riverpod
+
+### 🔌 Providers
+
+- Use `@riverpod` annotations (codegen).  
+- Prefer:
+  - `AsyncNotifierProvider` for async logic  
+  - `NotifierProvider` for sync logic  
+- Avoid `StateProvider`, `StateNotifierProvider`, `ChangeNotifierProvider`.  
+- Use `ref.invalidate()` for manual refresh.  
+- Cancel async tasks on widget disposal.
+
+---
+
+### ⏱️ AsyncValue Handling
+
+- Represent loading/error/data using `AsyncValue<T>`.  
+- Handle empty states in-screen.  
+- Show errors with `SelectableText.rich` (red text), **not SnackBars**.
+
+---
+
+## 6. Backend (Supabase)
+
+- Isolate DB/network logic in repositories.  
+- Handle all errors and connectivity issues gracefully.  
+- Use `log()` instead of `print()`.  
+- Serialize/deserialize using `json_serializable`.  
+- Prefer typed responses and error-safe APIs.
+
+---
+
+## 7. Navigation & Routing
+
+- Use **GoRouter** or **AutoRoute** for navigation and deep linking.  
+- Pass data via `extras` or typed arguments.  
+- Handle guards and redirects with Riverpod providers.
+
+---
+
+## 8. Code Conventions
+
+### 🧾 Formatting
+
+- Use **trailing commas** in multi-line parameter lists.  
+- Keep line length ≤ 80 characters.  
+- No blank lines inside functions.  
+
+### 🛠️ Code Generation
+
+Use `build_runner` for:
+- Freezed  
+- Riverpod  
+- JSON serialization  
+
+```bash
+flutter pub run build_runner build --delete-conflicting-outputs
+```
+
+### 📚 Documentation
+
+- Document **why**, not **what**.  
+- Follow official documentation for Flutter, Riverpod, and Supabase.  
+- Comment non-obvious design decisions.
+
+---
+
+## 9. Testing
+
+### 🧪 Principles
+
+- Follow **Arrange–Act–Assert** for unit tests.  
+- Follow **Given–When–Then** for acceptance tests.  
+- Use descriptive variable names (`inputUser`, `mockRepo`, `expectedResult`).  
+- Write tests for all **public functions**.  
+- Use **widget tests** for UI.  
+- Write **integration tests** for each API module.  
+- Use mocks/test doubles for external dependencies.
+
+---
+
+## 10. Error Handling & Logging
+
+### 🚨 Error Management
+
+- Use **Result<T, E>** pattern for error handling:
+  ```dart
+  sealed class Result<T, E> {
+    const Result();
+  }
+  
+  class Success<T, E> extends Result<T, E> {
+    final T data;
+    const Success(this.data);
+  }
+  
+  class Failure<T, E> extends Result<T, E> {
+    final E error;
+    const Failure(this.error);
+  }
+  ```
+- Define **custom exceptions** for each domain:
+  ```dart
+  class UserNotFoundException implements Exception {
+    final String message;
+    UserNotFoundException(this.message);
+  }
+  ```
+- Handle errors at the **repository level**, not in UI.
+- Use `log()` with appropriate levels: `debug`, `info`, `warning`, `error`.
+
+---
+
+## 11. Security & Data Protection
+
+### 🔒 Security Guidelines
+
+- Store sensitive data using **flutter_secure_storage**:
+  ```dart
+  final storage = FlutterSecureStorage();
+  await storage.write(key: 'api_key', value: apiKey);
+  ```
+- Use **environment variables** for API keys and secrets.
+- Validate all **user inputs** before processing.
+- Implement **input sanitization** for text fields.
+- Use **HTTPS only** for network requests.
+- Implement proper **authentication flow** with token refresh.
+
+### 🛡️ Data Validation
+
+- Use **form validation** with clear error messages.
+- Implement **client-side validation** before API calls.
+- Sanitize data before storing in database.
+
+---
+
+## 12. Performance & Monitoring
+
+### ⚡ Performance Optimization
+
+- Prevent **memory leaks** by disposing controllers and streams.
+- Use **const constructors** for static widgets.
+- Implement **lazy loading** for large datasets.
+- Optimize **image loading** with proper caching:
+  ```dart
+  CachedNetworkImage(
+    imageUrl: url,
+    placeholder: (context, url) => CircularProgressIndicator(),
+    errorWidget: (context, url, error) => Icon(Icons.error),
+  )
+  ```
+- Use **ListView.builder** for infinite lists.
+- Implement **debouncing** for search inputs.
+
+### 📊 Monitoring
+
+- Use **Firebase Analytics** for user behavior tracking.
+- Implement **crash reporting** with Firebase Crashlytics.
+- Monitor **API response times** and error rates.
+- Track **memory usage** in development.
+
+---
+
+## 13. Accessibility & Internationalization
+
+### ♿ Accessibility
+
+- Add **semantic labels** for screen readers:
+  ```dart
+  Semantics(
+    label: 'User profile button',
+    child: IconButton(...),
+  )
+  ```
+- Ensure **color contrast** meets WCAG guidelines.
+- Use **minimum touch target size** of 44x44 points.
+- Implement **focus management** for keyboard navigation.
+- Provide **alternative text** for images.
+
+### 🌍 Internationalization
+
+- Use **flutter_localizations** for i18n:
+  ```dart
+  // lib/l10n/app_vi.arb
+  {
+    "welcome": "Chào mừng",
+    "@welcome": {
+      "description": "Welcome message"
+    }
+  }
+  ```
+- Support **RTL languages** with proper text direction.
+- Format **dates and numbers** according to locale.
+- Use **pluralization** for different quantities.
+
+---
+
+## 14. CI/CD & Deployment
+
+### 🚀 Build Configuration
+
+- Configure **different environments** (dev, staging, prod):
+  ```dart
+  // lib/config/app_config.dart
+  abstract class AppConfig {
+    static const String apiUrl = String.fromEnvironment('API_URL');
+    static const bool isDebug = bool.fromEnvironment('DEBUG');
+  }
+  ```
+- Use **flavors** for different app variants.
+- Implement **code signing** for release builds.
+- Set up **automated testing** in CI pipeline.
+
+### 📱 Release Management
+
+- Follow **semantic versioning** (MAJOR.MINOR.PATCH).
+- Maintain **changelog** for each release.
+- Use **feature flags** for gradual rollouts.
+- Implement **rollback strategy** for critical issues.
+
+---
+
+## 15. Code Review & Collaboration
+
+### 👥 Code Review Guidelines
+
+- Use **pull request templates** with checklist.
+- Review for **code quality**, **security**, and **performance**.
+- Ensure **test coverage** for new features.
+- Check **accessibility** compliance.
+- Verify **internationalization** support.
+
+### 🌿 Branch Management
+
+- Use **feature branches** with descriptive names:
+  ```
+  feature/user-authentication
+  bugfix/login-validation
+  hotfix/critical-security-patch
+  ```
+- Follow **GitFlow** or **GitHub Flow** workflow.
+- Use **conventional commits** for clear history:
+  ```
+  feat: add user authentication
+  fix: resolve login validation issue
+  docs: update API documentation
+  ```
+
+---
+
+## 16. Miscellaneous
+
+- Follow **SOLID** principles; prefer **composition over inheritance**.  
+- Use **Flutter Hooks** when beneficial.  
+- Avoid magic numbers; define constants in a single source.  
+- Prioritize **readability, maintainability, and testability** over cleverness.
+- Implement **graceful degradation** for offline scenarios.
+- Use **progressive enhancement** for features.
+
+---
+
+© 2025 — Flutter/Dart Unified Code Style Guide
