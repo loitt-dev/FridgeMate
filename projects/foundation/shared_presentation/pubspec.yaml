@@ -1,0 +1,33 @@
+name: shared_presentation
+description: "Shared presentation layer with base classes, widgets, and view models"
+version: 0.0.1
+publish_to: none
+homepage:
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+    
+  # CAN depend on domain (for entities, use cases)
+  domain:
+    path: ../../core/domain
+    
+  # CAN depend on other foundation modules
+  design_system:
+    path: ../design_system
+  common:
+    path: ../common
+    
+  # ✅ CÓ get_it để sử dụng trong ViewModels
+  get_it: ^7.6.0
+  
+  # State management
+  flutter_riverpod: ^2.5.0
+  
+  # ❌ KHÔNG depend data, network, local_storage
+
+dev_dependencies:
+  build_runner: ^2.4.0

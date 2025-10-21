@@ -1,0 +1,32 @@
+name: fridge_manager_app
+description: "Fridge management app feature module"
+version: 0.0.1
+publish_to: none
+homepage:
+
+environment:
+  sdk: ^3.9.2
+
+dependencies:
+  flutter:
+    sdk: flutter
+  
+  # Foundation
+  design_system:
+    path: ../../foundation/design_system
+  navigation:
+    path: ../../foundation/navigation
+  shared_presentation:
+    path: ../../foundation/shared_presentation
+  common:
+    path: ../../foundation/common
+  
+  # Core - CHỈ domain!
+  domain:
+    path: ../../core/domain
+  
+  # ✅ get_it để resolve dependencies
+  get_it: ^7.6.0
+  flutter_riverpod: ^2.5.0
+  
+  # ❌ KHÔNG depend: data, network, local_storage, config
