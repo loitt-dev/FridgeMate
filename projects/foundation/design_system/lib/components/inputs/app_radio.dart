@@ -19,7 +19,7 @@ class AppRadio<T> extends StatelessWidget {
   });
   
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) {  
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
     
@@ -39,7 +39,7 @@ class AppRadio<T> extends StatelessWidget {
           Text(
             label!,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: enabled ? null : colorScheme.onSurface.withOpacity(0.6),
+              color: enabled ? null : colorScheme.onSurface.withValues(alpha: 0.6),
             ),
           ),
         ],

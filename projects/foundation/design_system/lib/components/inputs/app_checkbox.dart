@@ -39,7 +39,7 @@ class AppCheckbox extends StatelessWidget {
           Text(
             label!,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: enabled ? null : colorScheme.onSurface.withOpacity(0.6),
+              color: enabled ? null : colorScheme.onSurface.withValues(alpha: 0.6),
             ),
           ),
         ],

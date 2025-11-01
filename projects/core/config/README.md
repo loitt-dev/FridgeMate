@@ -1,171 +1,355 @@
 # Config Module
 
-## 📋 Tổng Quan
+Configuration layer for FridgeMate - Provides environment-specific settings, constants, and application configuration.
 
-Config module cung cấp constants, environment configuration, và app settings cho FridgeMate.
+## 📋 Overview
 
-## 🎯 Nguyên Tắc
+The `config` module is a **pure Dart module** (no external dependencies) that centralizes all configuration settings and constants used across the FridgeMate application.
 
-- **Configuration**: App constants và environment settings
-- **Environment**: Development, staging, production configs
-- **Constants**: API endpoints, app constants, storage keys
-- **No Dependencies**: Không phụ thuộc modules khác
-- **Type Safe**: Strongly typed configuration
+## 🏗️ Architecture Principles
 
-## 📁 Cấu Trúc
+- ✅ **Pure Dart**: No external dependencies (not even Flutter SDK)
+- ✅ **Zero Dependencies**: Self-contained configuration module
+- ✅ **Environment-aware**: Supports development, staging, and production
+- ✅ **Type-safe**: All configurations are strongly typed
+- ✅ **Centralized**: Single source of truth for all app constants
+
+## 📁 Structure
 
 ```
 lib/
-├── config.dart
-├── app_config.dart                 # Main configuration
-├── constants/
-│   ├── app_constants.dart          # App-wide constants
-│   ├── api_constants.dart          # API endpoints
-│   ├── storage_constants.dart      # Storage keys
-│   └── constants.dart
-└── environment/
-    ├── environment.dart            # Environment enum
-    ├── development_env.dart        # Dev config
-    └── production_env.dart         # Prod config
+├── config.dart                     # Export barrel
+├── app_config.dart                 # Main configuration class
+│
+├── environment/
+│   ├── environment.dart            # Environment enum + exports
+│   ├── development_env.dart        # Development settings
+│   ├── staging_env.dart            # Staging settings
+│   └── production_env.dart         # Production settings
+│
+└── constants/
+    ├── constants.dart              # Export barrel
+    ├── app_constants.dart          # App-level constants
+    ├── api_constants.dart          # API-related constants
+    └── storage_constants.dart      # Storage keys and paths
 ```
 
-## 🔧 Dependencies
+## 🎯 Usage
 
-```yaml
-dependencies:
-  # ❌ NO external dependencies
-  # ❌ NO domain/data dependencies
-  # ❌ NO get_it
-```
-
-## 📝 Sử Dụng
-
-### App Configuration
+### Basic Usage
 
 ```dart
-class AppConfig {
-  final String apiBaseUrl;
-  final String appName;
-  final String version;
-  final bool isDebug;
-  final Environment environment;
+import 'package:config/config.dart';
+
+void main() {
+  // Get configuration from environment
+  final config = AppConfig.fromEnvironment();
   
-  const AppConfig({
-    required this.apiBaseUrl,
-    required this.appName,
-    required this.version,
-    required this.isDebug,
-    required this.environment,
-  });
-  
-  factory AppConfig.fromEnvironment() {
-    const environment = String.fromEnvironment('ENV', defaultValue: 'development');
-    
-    switch (environment) {
-      case 'production':
-        return ProductionEnvironment.config;
-      case 'staging':
-        return StagingEnvironment.config;
-      default:
-        return DevelopmentEnvironment.config;
-    }
-  }
+  print('Environment: ${config.environment.name}');
+  print('API URL: ${config.apiBaseUrl}');
+  print('Debug Mode: ${config.isDebug}');
 }
 ```
 
-### Environment Configurations
+### Using in Dependency Injection
+
+```dart
+// lib/di/injection_container.dart
+import 'package:config/config.dart';
+import 'package:get_it/get_it.dart';
+
+final getIt = GetIt.instance;
+
+Future<void> configureDependencies() async {
+  // Register AppConfig
+  getIt.registerLazySingleton<AppConfig>(
+    () => AppConfig.fromEnvironment(),
+  );
+  
+  // Use config in other registrations
+  getIt.registerLazySingleton<DioClient>(
+    () => DioClient(
+      baseUrl: getIt<AppConfig>().apiBaseUrl,
+      connectTimeout: getIt<AppConfig>().connectTimeout,
+    ),
+  );
+}
+```
+
+### Environment-Specific Builds
+
+```bash
+# Development (default)
+flutter run
+
+# Staging
+flutter run --dart-define=ENVIRONMENT=staging
+
+# Production
+flutter run --dart-define=ENVIRONMENT=production
+```
+
+## 📦 Components
+
+### 1. AppConfig
+
+Main configuration class that provides all app settings based on environment.
+
+```dart
+final config = AppConfig.fromEnvironment();
+
+// App Info
+config.appName;          // 'FridgeMate Dev' | 'FridgeMate Staging' | 'FridgeMate'
+config.appVersion;       // '1.0.0'
+config.isDebug;          // true | false
+
+// API
+config.apiBaseUrl;       // Environment-specific API URL
+config.apiUrl;           // Full API URL with version
+
+// Database
+config.databaseName;     // Environment-specific DB name
+config.enableDatabaseLogging;
+
+// Feature Flags
+config.enableLogging;
+config.enablePerformanceMonitoring;
+config.enableCrashReporting;
+
+// Network
+config.connectTimeout;
+config.receiveTimeout;
+config.sendTimeout;
+
+// Cache
+config.cacheExpiration;
+config.enableCaching;
+
+// Notifications
+config.enablePushNotifications;
+config.expiryWarningDays;
+
+// Phase 3 - AI Features
+config.enableAiFeatures;
+config.aiServiceUrl;
+
+// Phase 4 - Social Features
+config.enableSocialFeatures;
+
+// Phase 5 - Payment Features
+config.enablePaymentFeatures;
+config.paymentGatewayUrl;
+```
+
+### 2. Environment Enum
 
 ```dart
 enum Environment {
   development,
   staging,
-  production,
+  production;
 }
 
-class DevelopmentEnvironment {
-  static const AppConfig config = AppConfig(
-    apiBaseUrl: 'http://localhost:3000/api',
-    appName: 'FridgeMate Dev',
-    version: '1.0.0-dev',
-    isDebug: true,
-    environment: Environment.development,
-  );
-}
-
-class ProductionEnvironment {
-  static const AppConfig config = AppConfig(
-    apiBaseUrl: 'https://api.fridgemate.com',
-    appName: 'FridgeMate',
-    version: '1.0.0',
-    isDebug: false,
-    environment: Environment.production,
-  );
+// Usage
+final env = Environment.fromString('production');
+if (env.isDevelopment) {
+  // Development-specific logic
 }
 ```
 
-### Constants
+### 3. Constants
+
+#### App Constants
 
 ```dart
-class AppConstants {
-  // App Info
-  static const String appName = 'FridgeMate';
-  static const String appVersion = '1.0.0';
-  
-  // Storage
-  static const String databaseName = 'fridgemate.db';
-  static const int databaseVersion = 1;
-  
-  // UI
-  static const double defaultPadding = 16.0;
-  static const double defaultRadius = 8.0;
-  static const Duration animationDuration = Duration(milliseconds: 300);
-}
+import 'package:config/constants/app_constants.dart';
 
-class ApiConstants {
-  // Endpoints
-  static const String baseUrl = 'https://api.fridgemate.com';
-  static const String storageItems = '/api/v1/storage/items';
-  static const String recipes = '/api/v1/recipes';
-  static const String shoppingLists = '/api/v1/shopping/lists';
-  
-  // Headers
-  static const String contentType = 'application/json';
-  static const String acceptLanguage = 'vi-VN';
-  
-  // Timeouts
-  static const Duration connectTimeout = Duration(seconds: 30);
-  static const Duration receiveTimeout = Duration(seconds: 30);
-}
+AppConstants.appName;                    // 'FridgeMate'
+AppConstants.databaseName;               // 'fridgemate.db'
+AppConstants.defaultPageSize;            // 20
+AppConstants.maxImageSize;               // 5MB
+AppConstants.defaultExpiryWarningDays;   // 3
+```
 
-class StorageConstants {
-  // SharedPreferences Keys
-  static const String lastSelectedCategory = 'last_selected_category';
-  static const String favoriteRecipeIds = 'favorite_recipe_ids';
-  static const String isDarkMode = 'is_dark_mode';
-  static const String language = 'language';
-  
-  // Database Tables
-  static const String storageItemsTable = 'storage_items';
-  static const String storageCategoriesTable = 'storage_categories';
-  static const String recipesTable = 'recipes';
-  static const String shoppingListsTable = 'shopping_lists';
+#### API Constants
+
+```dart
+import 'package:config/constants/api_constants.dart';
+
+ApiConstants.connectTimeout;             // Duration(seconds: 30)
+ApiConstants.maxRetries;                 // 3
+ApiConstants.contentType;                // 'application/json'
+ApiConstants.successCode;                // 200
+```
+
+#### Storage Constants
+
+```dart
+import 'package:config/constants/storage_constants.dart';
+
+// SharedPreferences keys
+StorageConstants.authTokenKey;           // 'auth_token'
+StorageConstants.themeKey;               // 'theme'
+
+// Database tables
+StorageConstants.storageItemsTable;      // 'storage_items'
+StorageConstants.recipesTable;           // 'recipes'
+
+// Cache keys
+StorageConstants.categoriesCacheKey;     // 'categories_cache'
+```
+
+## 🔧 Environment Configurations
+
+### Development Environment
+
+- **API**: `http://localhost:3000`
+- **Database**: `fridgemate_dev.db`
+- **Debug**: Enabled
+- **Logging**: Verbose
+- **Cache**: 5 minutes
+- **Features**: All future features disabled
+
+### Staging Environment
+
+- **API**: `https://staging-api.fridgemate.com`
+- **Database**: `fridgemate_staging.db`
+- **Debug**: Enabled
+- **Logging**: Verbose
+- **Cache**: 1 hour
+- **Features**: All future features disabled
+
+### Production Environment
+
+- **API**: `https://api.fridgemate.com`
+- **Database**: `fridgemate.db`
+- **Debug**: Disabled
+- **Logging**: Minimal
+- **Cache**: 24 hours
+- **Security**: SSL pinning enabled
+
+## 🎭 Phase-Based Feature Flags
+
+### Phase 1 (Current) - Offline Management
+All basic features enabled by default.
+
+### Phase 2 - Online Features
+- User authentication
+- Data synchronization
+- Cloud backup
+
+### Phase 3 - AI Features
+```dart
+if (config.enableAiFeatures) {
+  // Image recognition
+  // Barcode scanning
+  // AI suggestions
 }
 ```
 
-## ✅ Validation
+### Phase 4 - Social Features
+```dart
+if (config.enableSocialFeatures) {
+  // Community features
+  // Recipe sharing
+  // Social interactions
+}
+```
 
-- [ ] Pure configuration - no business logic
-- [ ] KHÔNG phụ thuộc modules khác
-- [ ] KHÔNG có get_it
-- [ ] Environment configs được setup
-- [ ] Constants được organize đúng
-- [ ] Type safe configuration
-- [ ] Easy to change environments
+### Phase 5 - E-commerce
+```dart
+if (config.enablePaymentFeatures) {
+  // Order management
+  // Payment processing
+  // Delivery tracking
+}
+```
 
-## 🚀 Phase 1 Features
+## ✅ Best Practices
 
-- **Environment Management**: Dev, staging, production
-- **API Configuration**: Base URLs và endpoints
-- **App Constants**: UI constants và settings
-- **Storage Keys**: Database và preferences keys
-- **Build Configuration**: Environment-specific builds
+### 1. Use AppConfig for Runtime Configuration
+```dart
+// ✅ Good
+final config = getIt<AppConfig>();
+if (config.enableLogging) {
+  logger.log('Something happened');
+}
+
+// ❌ Bad - Don't hardcode
+if (kDebugMode) {
+  logger.log('Something happened');
+}
+```
+
+### 2. Use Constants for Static Values
+```dart
+// ✅ Good
+final pageSize = AppConstants.defaultPageSize;
+
+// ❌ Bad - Don't use magic numbers
+final pageSize = 20;
+```
+
+### 3. Environment-Specific Logic
+```dart
+// ✅ Good
+if (config.environment.isDevelopment) {
+  // Dev-only code
+}
+
+// ❌ Bad - Don't use build-time constants
+#if DEBUG
+  // This is less flexible
+#endif
+```
+
+## 🧪 Testing
+
+```dart
+import 'package:config/config.dart';
+import 'package:flutter_test/flutter_test.dart';
+
+void main() {
+  group('AppConfig', () {
+    test('creates development config by default', () {
+      final config = AppConfig.fromEnvironment();
+      
+      expect(config.environment, Environment.development);
+      expect(config.isDebug, true);
+      expect(config.apiBaseUrl, DevelopmentEnv.apiBaseUrl);
+    });
+    
+    test('has correct feature flags for Phase 1', () {
+      final config = AppConfig.fromEnvironment();
+      
+      expect(config.enableAiFeatures, false);
+      expect(config.enableSocialFeatures, false);
+      expect(config.enablePaymentFeatures, false);
+    });
+  });
+}
+```
+
+## 📝 Notes
+
+- This module has **zero external dependencies**
+- All configurations are compile-time constants when possible
+- Environment switching is done via `--dart-define`
+- Feature flags allow gradual rollout of new phases
+- Constants are organized by domain (app, api, storage)
+
+## 🔗 Dependencies
+
+**None** - This is a pure Dart module with no dependencies.
+
+## 📚 Related Modules
+
+- Used by: `network`, `data`, `local_storage`, and all other modules
+- Depends on: None
+
+## 🚀 Future Enhancements
+
+- [ ] Remote configuration (Phase 2)
+- [ ] A/B testing flags (Phase 4)
+- [ ] Dynamic feature toggles (Phase 4)
+- [ ] Analytics configuration (Phase 4)

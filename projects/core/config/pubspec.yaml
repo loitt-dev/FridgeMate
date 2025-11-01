@@ -1,13 +1,16 @@
 name: config
-description: Configuration layer for FridgeMate - Constants and environment
+description: Configuration layer for FridgeMate - Constants and environment settings
 version: 1.0.0
+publish_to: 'none'
 
 environment:
   sdk: ^3.9.2
 
 dependencies:
-  flutter:
-    sdk: flutter
+  # Pure Dart - No external dependencies
+  # This module provides configuration and constants only
 
 dev_dependencies:
-  build_runner: ^2.4.0
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^5.0.0

@@ -1,419 +1,207 @@
-# Shared Presentation Module
+# Shared Presentation Layer
 
-## 📋 Tổng Quan
+Shared presentation layer cung cấp các component cơ bản để xây dựng UI trong FridgeMate apps.
 
-Shared Presentation module cung cấp base classes, widgets, và view models được chia sẻ giữa các feature apps của FridgeMate.
-
-## 🎯 Nguyên Tắc
-
-- **Base Classes**: Base ViewModel, State, Screen
-- **Shared Widgets**: Common UI components
-- **GetIt Integration**: Sử dụng GetIt để resolve dependencies
-- **Riverpod State Management**: StateNotifier pattern
-- **Reusable Logic**: Business logic được chia sẻ
-
-## 📁 Cấu Trúc
+## 🏗️ Cấu Trúc
 
 ```
 lib/
-├── shared_presentation.dart
-├── base/
-│   ├── base_view_model.dart        # Base StateNotifier
-│   ├── base_state.dart             # Common UI states
-│   └── base_screen.dart            # Base screen widget
-├── mixins/
-│   ├── loading_state_mixin.dart    # Loading state mixin
-│   ├── error_handling_mixin.dart   # Error handling mixin
-│   └── validation_mixin.dart       # Validation mixin
-├── widgets/                        # Shared smart widgets
-│   ├── item_list/
-│   │   ├── item_list_widget.dart
-│   │   └── item_card_widget.dart
-│   ├── expiry/
-│   │   └── expiry_badge_widget.dart
-│   ├── recipe/
-│   │   └── recipe_card_widget.dart
-│   └── shopping/
-│       └── shopping_item_widget.dart
-└── view_models/                    # Shared ViewModels
+├── base/                    # Base classes
+│   ├── base_view_model.dart    # Base ViewModel với GetIt helper
+│   ├── base_state.dart         # Common UI states
+│   └── base_screen.dart        # Base screen với common functionality
+│
+├── mixins/                  # Reusable mixins
+│   ├── loading_state_mixin.dart    # Loading state management
+│   ├── error_handling_mixin.dart   # Error handling
+│   ├── validation_mixin.dart       # Form validation
+│   └── pagination_mixin.dart       # Pagination support
+│
+├── widgets/                 # Shared widgets
+│   ├── item_list/               # List widgets
+│   ├── expiry/                  # Expiry-related widgets
+│   ├── recipe/                  # Recipe widgets
+│   └── shopping/                # Shopping widgets
+│
+└── view_models/             # Shared ViewModels
     ├── item_list_view_model.dart
-    └── recipe_list_view_model.dart
+    ├── recipe_list_view_model.dart
+    └── shopping_list_view_model.dart
 ```
 
-## 🔧 Dependencies
+## 🚀 Sử Dụng
 
-```yaml
-dependencies:
-  flutter:
-    sdk: flutter
-    
-  # CAN depend on domain (for entities, use cases)
-  domain:
-    path: ../../core/domain
-    
-  # CAN depend on other foundation modules
-  design_system:
-    path: ../design_system
-  common:
-    path: ../common
-    
-  # ✅ CÓ get_it để sử dụng trong ViewModels
-  get_it: ^7.6.0
-  
-  # State management
-  flutter_riverpod: ^2.5.0
-  
-  # ❌ KHÔNG depend data, network, local_storage
-```
-
-## 📝 Sử Dụng
-
-### Base ViewModel
+### 1. Base ViewModel
 
 ```dart
-abstract class BaseViewModel<T> extends StateNotifier<T> {
-  BaseViewModel(T initialState) : super(initialState);
+import 'package:shared_presentation/shared_presentation.dart';
+
+class MyViewModel extends BaseViewModel<MyState> {
+  MyViewModel() : super(MyState.initial());
   
-  // Helper to resolve from GetIt
-  U resolve<U extends Object>() => GetIt.I<U>();
-  
-  // Common async handler
-  Future<void> handleAsync(
-    Future<void> Function() operation, {
-    void Function()? onStart,
-    void Function()? onComplete,
-    void Function(Object error)? onError,
-  }) async {
-    try {
-      onStart?.call();
-      await operation();
-    } catch (e) {
-      onError?.call(e);
-    } finally {
-      onComplete?.call();
-    }
-  }
-  
-  // Loading state helper
-  void setLoading(bool loading) {
-    if (state is BaseState) {
-      state = (state as BaseState).copyWith(isLoading: loading) as T;
-    }
-  }
-  
-  // Error state helper
-  void setError(String? error) {
-    if (state is BaseState) {
-      state = (state as BaseState).copyWith(error: error) as T;
-    }
+  Future<void> loadData() async {
+    final useCase = resolve<GetDataUseCase>(); // GetIt helper
+    
+    await handleAsync(() async {
+      final result = await useCase.execute();
+      // Handle result
+    });
   }
 }
 ```
 
-### Base State
+### 2. Base States
 
 ```dart
+// Sử dụng các state có sẵn
 @freezed
-class BaseState with _$BaseState {
-  const factory BaseState({
-    @Default(false) bool isLoading,
-    String? error,
-    @Default(false) bool isInitialized,
-  }) = _BaseState;
-  
-  const BaseState._();
-  
-  bool get hasError => error != null;
-  bool get isSuccess => !isLoading && !hasError && isInitialized;
+class MyState with _$MyState {
+  const factory MyState.initial() = MyInitialState;
+  const factory MyState.loading() = MyLoadingState;
+  const factory MyState.success(MyData data) = MySuccessState;
+  const factory MyState.error(String message) = MyErrorState;
+}
+
+// Hoặc extend từ base states
+@freezed
+class MyListState with _$MyListState {
+  const factory MyListState.initial() = MyListInitialState;
+  const factory MyListState.loading() = MyListLoadingState;
+  const factory MyListState.success(List<MyItem> items, {@Default(false) bool hasMore}) = MyListSuccessState;
+  const factory MyListState.error(String message) = MyListErrorState;
 }
 ```
 
-### Base Screen
+### 3. Mixins
 
 ```dart
-abstract class BaseScreen<T extends StateNotifier<BaseState>> extends ConsumerStatefulWidget {
-  const BaseScreen({super.key});
+class MyViewModel extends BaseViewModel<MyState>
+    with LoadingStateMixin<MyState>, 
+         ErrorHandlingMixin<MyState>,
+         ValidationMixin<MyState> {
   
+  Future<void> loadData() async {
+    await executeWithLoading(() async {
+      // Your async operation
+    });
+  }
+  
+  void validateForm() {
+    validateField('email', emailValue, [ValidationRule.email()]);
+  }
+}
+```
+
+### 4. Shared Widgets
+
+```dart
+// Item list widget
+ItemListWidget<MyItem>(
+  items: items,
+  itemBuilder: (context, item, index) => MyItemWidget(item: item),
+  isLoading: isLoading,
+  hasError: hasError,
+  errorMessage: errorMessage,
+  onRefresh: () => viewModel.refresh(),
+  onLoadMore: () => viewModel.loadMore(),
+)
+
+// Item card widget
+ItemCardWidget(
+  title: item.name,
+  subtitle: item.description,
+  leading: Icon(Icons.item),
+  trailing: ExpiryBadgeWidget(expiryDate: item.expiryDate),
+  onTap: () => navigateToDetail(item),
+)
+
+// Recipe card widget
+RecipeCardWidget(
+  title: recipe.name,
+  description: recipe.description,
+  imageUrl: recipe.imageUrl,
+  cookingTime: recipe.cookingTime,
+  difficulty: recipe.difficulty,
+  rating: recipe.rating,
+  onTap: () => navigateToRecipe(recipe),
+  onFavorite: () => toggleFavorite(recipe),
+)
+```
+
+### 5. Shared ViewModels
+
+```dart
+// Item list ViewModel
+class MyItemListViewModel extends ItemListViewModel<MyItem> {
   @override
-  ConsumerState<BaseScreen<T>> createState() => _BaseScreenState<T>();
-}
-
-class _BaseScreenState<T extends StateNotifier<BaseState>> extends ConsumerState<BaseScreen<T>> {
-  @override
-  Widget build(BuildContext context) {
-    final state = ref.watch(viewModelProvider);
-    
-    return Scaffold(
-      body: state.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error) => Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text('Lỗi: $error'),
-              ElevatedButton(
-                onPressed: () => ref.read(viewModelProvider.notifier).retry(),
-                child: const Text('Thử lại'),
-              ),
-            ],
-          ),
-        ),
-        success: () => buildContent(context, state),
-      ),
-    );
-  }
-  
-  Widget buildContent(BuildContext context, T state);
-  
-  StateNotifierProvider<T> get viewModelProvider;
-}
-```
-
-### Loading State Mixin
-
-```dart
-mixin LoadingStateMixin<T extends BaseState> on StateNotifier<T> {
-  void setLoading(bool loading) {
-    state = state.copyWith(isLoading: loading) as T;
-  }
-  
-  Future<R> withLoading<R>(Future<R> Function() operation) async {
-    setLoading(true);
-    try {
-      final result = await operation();
-      return result;
-    } finally {
-      setLoading(false);
-    }
-  }
-}
-```
-
-### Error Handling Mixin
-
-```dart
-mixin ErrorHandlingMixin<T extends BaseState> on StateNotifier<T> {
-  void setError(String? error) {
-    state = state.copyWith(error: error) as T;
-  }
-  
-  void clearError() {
-    setError(null);
-  }
-  
-  Future<R?> handleAsync<R>(
-    Future<R> Function() operation, {
-    String? errorMessage,
-  }) async {
-    try {
-      clearError();
-      return await operation();
-    } catch (e) {
-      setError(errorMessage ?? e.toString());
-      return null;
-    }
-  }
-}
-```
-
-### Shared Widgets
-
-```dart
-class ItemListWidget extends ConsumerWidget {
-  final List<StorageItem> items;
-  final Function(StorageItem) onItemTap;
-  final Function(StorageItem)? onItemDelete;
-  
-  const ItemListWidget({
-    super.key,
-    required this.items,
-    required this.onItemTap,
-    this.onItemDelete,
-  });
-  
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return ListView.builder(
-      itemCount: items.length,
-      itemBuilder: (context, index) {
-        final item = items[index];
-        return ItemCardWidget(
-          item: item,
-          onTap: () => onItemTap(item),
-          onDelete: onItemDelete != null ? () => onItemDelete!(item) : null,
-        );
-      },
-    );
-  }
-}
-
-class ItemCardWidget extends StatelessWidget {
-  final StorageItem item;
-  final VoidCallback onTap;
-  final VoidCallback? onDelete;
-  
-  const ItemCardWidget({
-    super.key,
-    required this.item,
-    required this.onTap,
-    this.onDelete,
-  });
-  
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      child: ListTile(
-        leading: CircleAvatar(
-          backgroundColor: item.category.color,
-          child: Text(item.name[0].toUpperCase()),
-        ),
-        title: Text(item.name),
-        subtitle: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(item.category.name),
-            Text('HSD: ${item.expiryDate.formattedDate}'),
-          ],
-        ),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (item.isExpiringSoon)
-              const ExpiryBadgeWidget(),
-            if (onDelete != null)
-              IconButton(
-                icon: const Icon(Icons.delete),
-                onPressed: onDelete,
-              ),
-          ],
-        ),
-        onTap: onTap,
-      ),
-    );
-  }
-}
-```
-
-### Expiry Badge Widget
-
-```dart
-class ExpiryBadgeWidget extends StatelessWidget {
-  final DateTime? expiryDate;
-  final String? customText;
-  
-  const ExpiryBadgeWidget({
-    super.key,
-    this.expiryDate,
-    this.customText,
-  });
-  
-  @override
-  Widget build(BuildContext context) {
-    final text = customText ?? _getExpiryText();
-    final color = _getExpiryColor();
-    
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-      decoration: BoxDecoration(
-        color: color,
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 12,
-          fontWeight: FontWeight.bold,
-        ),
-      ),
-    );
-  }
-  
-  String _getExpiryText() {
-    if (expiryDate == null) return 'Hết hạn';
-    
-    if (expiryDate!.isExpired) return 'Hết hạn';
-    if (expiryDate!.isExpiringSoon) return 'Sắp hết hạn';
-    return 'Còn hạn';
-  }
-  
-  Color _getExpiryColor() {
-    if (expiryDate == null) return Colors.red;
-    
-    if (expiryDate!.isExpired) return Colors.red;
-    if (expiryDate!.isExpiringSoon) return Colors.orange;
-    return Colors.green;
-  }
-}
-```
-
-### Shared ViewModels
-
-```dart
-class ItemListViewModel extends BaseViewModel<ItemListState> {
-  late final GetStorageItemsUseCase _getItemsUseCase;
-  late final DeleteItemUseCase _deleteItemUseCase;
-  
-  ItemListViewModel() : super(ItemListState.initial()) {
-    _getItemsUseCase = resolve<GetStorageItemsUseCase>();
-    _deleteItemUseCase = resolve<DeleteItemUseCase>();
-  }
-  
   Future<void> loadItems() async {
-    await handleAsync(
-      () async {
-        final result = await _getItemsUseCase.execute();
-        result.fold(
-          (failure) => setError(failure.message),
-          (items) => state = state.copyWith(items: items),
-        );
-      },
-    );
+    final useCase = resolve<GetMyItemsUseCase>();
+    await loadItems(() => useCase.execute());
   }
   
-  Future<void> deleteItem(String itemId) async {
-    await handleAsync(
-      () async {
-        final result = await _deleteItemUseCase.execute(itemId);
-        result.fold(
-          (failure) => setError(failure.message),
-          (_) => loadItems(), // Reload items after deletion
-        );
-      },
-    );
+  @override
+  Future<void> loadMore() async {
+    final useCase = resolve<GetMyItemsUseCase>();
+    await loadMoreItems((page, pageSize) => useCase.execute(page: page, pageSize: pageSize));
   }
 }
 
-@freezed
-class ItemListState extends BaseState with _$ItemListState {
-  const factory ItemListState({
-    @Default(false) bool isLoading,
-    String? error,
-    @Default(false) bool isInitialized,
-    @Default([]) List<StorageItem> items,
-  }) = _ItemListState;
+// Recipe list ViewModel
+class MyRecipeListViewModel extends RecipeListViewModel {
+  @override
+  Future<void> loadRecipes() async {
+    final useCase = resolve<GetRecipesUseCase>();
+    await loadRecipes(() => useCase.execute());
+  }
   
-  const ItemListState._();
-  
-  static ItemListState initial() => const ItemListState();
+  @override
+  Future<void> searchRecipes(String query) async {
+    final useCase = resolve<SearchRecipesUseCase>();
+    await searchRecipes(query, (q) => useCase.execute(query: q));
+  }
 }
 ```
 
-## ✅ Validation
+## 📋 Dependencies
 
-- [ ] Base classes được implement đúng
-- [ ] GetIt integration hoạt động
-- [ ] Riverpod state management
-- [ ] Shared widgets reusable
-- [ ] Mixins hữu ích
-- [ ] ViewModels sử dụng use cases
-- [ ] Error handling đầy đủ
+### Có thể depend:
+- ✅ `domain` - Để sử dụng entities, use cases
+- ✅ `design_system` - Để sử dụng theme, colors
+- ✅ `common` - Để sử dụng utilities
+- ✅ `get_it` - Để resolve dependencies trong ViewModels
+- ✅ `flutter_riverpod` - State management
 
-## 🚀 Phase 1 Features
+### KHÔNG được depend:
+- ❌ `data` - Data layer
+- ❌ `network` - Network layer  
+- ❌ `local_storage` - Local storage layer
+- ❌ `config` - Configuration layer
 
-- **Base Architecture**: Base ViewModel, State, Screen
-- **State Management**: Riverpod + StateNotifier
-- **Shared Widgets**: Item lists, cards, badges
-- **Error Handling**: Centralized error management
-- **Loading States**: Loading state management
-- **GetIt Integration**: Dependency resolution
+## 🎯 Nguyên Tắc
+
+1. **Dependency Inversion**: Chỉ depend vào domain interfaces, không depend vào implementations
+2. **GetIt Usage**: Chỉ sử dụng GetIt trong ViewModels để resolve use cases
+3. **State Management**: Sử dụng Riverpod với base ViewModels
+4. **Reusability**: Tất cả components phải có thể reuse giữa các apps
+5. **Consistency**: Đảm bảo consistent UI/UX patterns
+
+## 🔧 Development
+
+### Build generated files:
+```bash
+dart run build_runner build
+```
+
+### Watch for changes:
+```bash
+dart run build_runner watch
+```
+
+### Clean build:
+```bash
+dart run build_runner clean
+```
+
+## 📝 Examples
+
+Xem các file example trong thư mục `examples/` để hiểu cách sử dụng các components.

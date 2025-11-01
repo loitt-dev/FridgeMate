@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/// FridgeMate icon system
+///
+/// This class defines all icons used throughout the FridgeMate app
+/// for consistent iconography and visual communication.
 class AppIcons {
   // Storage icons
   static const IconData fridge = Icons.kitchen;
@@ -122,4 +126,108 @@ class AppIcons {
   static const IconData cloud = Icons.cloud;
   static const IconData wifi = Icons.wifi;
   static const IconData bluetooth = Icons.bluetooth;
+
+  // ============================================
+  // FRIDGEMATE SPECIFIC ICONS
+  // ============================================
+
+  // Expiry and freshness
+  static const IconData expirySchedule = Icons.schedule;
+  static const IconData expiryWarning = Icons.warning_amber;
+  static const IconData expiryCritical = Icons.error_outline;
+  static const IconData fresh = Icons.check_circle;
+  static const IconData spoiled = Icons.cancel;
+
+  // Quantity and measurement
+  static const IconData quantity = Icons.scale;
+  static const IconData weight = Icons.monitor_weight;
+  static const IconData volume = Icons.local_drink;
+  static const IconData pieces = Icons.looks_one;
+  static const IconData grams = Icons.grain;
+  static const IconData kilograms = Icons.scale;
+  static const IconData liters = Icons.local_drink;
+  static const IconData milliliters = Icons.water_drop;
+
+  // Storage locations
+  static const IconData freezer = Icons.ac_unit;
+  static const IconData refrigerator = Icons.kitchen;
+  static const IconData pantry = Icons.store;
+  static const IconData counter = Icons.countertops;
+  static const IconData cabinet = Icons.kitchen;
+  static const IconData medicineCabinet = Icons.medication;
+
+  // Food preparation
+  static const IconData prep = Icons.restaurant_menu;
+  static const IconData cookingMethod = Icons.local_fire_department;
+  static const IconData baking = Icons.cake;
+  static const IconData grilling = Icons.outdoor_grill;
+  static const IconData frying = Icons.whatshot;
+  static const IconData boiling = Icons.water;
+  static const IconData steaming = Icons.air;
+
+  // Nutrition and health
+  static const IconData nutrition = Icons.eco;
+  static const IconData calories = Icons.local_fire_department;
+  static const IconData protein = Icons.fitness_center;
+  static const IconData carbs = Icons.grain;
+  static const IconData fat = Icons.opacity;
+  static const IconData fiber = Icons.eco;
+  static const IconData vitamins = Icons.medication;
+  static const IconData minerals = Icons.diamond;
+
+  // Shopping and purchasing
+  static const IconData priceTag = Icons.attach_money;
+  static const IconData discount = Icons.local_offer;
+  static const IconData sale = Icons.sell;
+  static const IconData coupon = Icons.receipt;
+  static const IconData receipt = Icons.receipt_long;
+  static const IconData barcodeScan = Icons.qr_code;
+  static const IconData qrCode = Icons.qr_code_scanner;
+
+  // Meal planning
+  static const IconData mealPlan = Icons.calendar_month;
+  static const IconData breakfast = Icons.wb_sunny;
+  static const IconData lunch = Icons.wb_sunny_outlined;
+  static const IconData dinner = Icons.nights_stay;
+  static const IconData snackTime = Icons.cookie;
+  static const IconData dessert = Icons.cake;
+
+  // Family and sharing
+  static const IconData family = Icons.family_restroom;
+  static const IconData shareContent = Icons.share;
+  static const IconData invite = Icons.person_add;
+  static const IconData group = Icons.group;
+  static const IconData userProfile = Icons.person;
+  static const IconData avatar = Icons.account_circle;
+
+  // Analytics and insights
+  static const IconData analytics = Icons.analytics;
+  static const IconData chart = Icons.bar_chart;
+  static const IconData graph = Icons.show_chart;
+  static const IconData trend = Icons.trending_up;
+  static const IconData report = Icons.assessment;
+  static const IconData insights = Icons.lightbulb;
+
+  // Settings and preferences
+  static const IconData preferences = Icons.tune;
+  static const IconData theme = Icons.palette;
+  static const IconData language = Icons.language;
+  static const IconData notifications = Icons.notifications_active;
+  static const IconData privacy = Icons.privacy_tip;
+  static const IconData security = Icons.security;
+
+  // Help and support
+  static const IconData help = Icons.help_outline;
+  static const IconData support = Icons.support_agent;
+  static const IconData feedback = Icons.feedback;
+  static const IconData bug = Icons.bug_report;
+  static const IconData feature = Icons.star;
+  static const IconData tutorial = Icons.school;
+
+  // Accessibility
+  static const IconData accessibility = Icons.accessibility;
+  static const IconData highContrast = Icons.contrast;
+  static const IconData largeText = Icons.text_increase;
+  static const IconData voiceOver = Icons.record_voice_over;
+  static const IconData screenReader = Icons.visibility_off;
 }

@@ -30,10 +30,10 @@ class AppSwitch extends StatelessWidget {
     Widget switchWidget = Switch(
       value: value,
       onChanged: enabled ? onChanged : null,
-      activeColor: activeColor ?? colorScheme.primary,
-      activeTrackColor: activeTrackColor ?? colorScheme.primary.withOpacity(0.5),
+      activeThumbColor: activeColor ?? colorScheme.primary,
+      activeTrackColor: activeTrackColor ?? colorScheme.primary.withValues(alpha: 0.5),
       inactiveThumbColor: inactiveThumbColor ?? colorScheme.outline,
-      inactiveTrackColor: inactiveTrackColor ?? colorScheme.outline.withOpacity(0.5),
+      inactiveTrackColor: inactiveTrackColor ?? colorScheme.outline.withValues(alpha: 0.5),
     );
     
     if (label != null) {
@@ -45,7 +45,7 @@ class AppSwitch extends StatelessWidget {
           Text(
             label!,
             style: theme.textTheme.bodyMedium?.copyWith(
-              color: enabled ? null : colorScheme.onSurface.withOpacity(0.6),
+              color: enabled ? null : colorScheme.onSurface.withValues(alpha: 0.6),
             ),
           ),
         ],
