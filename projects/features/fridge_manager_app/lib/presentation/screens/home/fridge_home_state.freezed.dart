@@ -319,7 +319,7 @@ class _$FridgeHomeStateImpl implements _FridgeHomeState {
     this.isLoadingRecipes = false,
     this.shoppingItemCount = 0,
     final List<String> shoppingPreviewItems = const [],
-    this.selectedBottomNavIndex = 0,
+    this.selectedBottomNavIndex = 2,
   }) : _expiringItems = expiringItems,
        _suggestedRecipes = suggestedRecipes,
        _shoppingPreviewItems = shoppingPreviewItems;

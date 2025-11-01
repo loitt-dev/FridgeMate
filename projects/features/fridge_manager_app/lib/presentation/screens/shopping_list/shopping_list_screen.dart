@@ -8,8 +8,8 @@ import 'shopping_list_state.dart';
 /// Provider for ShoppingListViewModel
 final shoppingListViewModelProvider =
     StateNotifierProvider<ShoppingListViewModel, ShoppingListState>((ref) {
-  return ShoppingListViewModel();
-});
+      return ShoppingListViewModel();
+    });
 
 /// Shopping List Screen - Placeholder
 class ShoppingListScreen extends ConsumerStatefulWidget {
@@ -33,12 +33,7 @@ class _ShoppingListScreenState extends ConsumerState<ShoppingListScreen> {
     final state = ref.watch(shoppingListViewModelProvider);
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'Danh Sách Mua Sắm',
-          style: context.textTheme.titleLarge,
-        ),
-      ),
+      appBar: AppBar(title: Text('Danh Sách Mua Sắm')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

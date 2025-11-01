@@ -28,36 +28,40 @@ class _BadgesShowcaseState extends State<BadgesShowcase> {
               // Good status
               Row(
                 children: [
-                  const ExpiryBadge(status: ExpiryStatus.fresh),
-                  const SizedBox(width: 16),
-                  const Text('Fresh - Good condition'),
+                  const ExpiryBadge(
+                    status: ExpiryStatus.fresh,
+                    text: 'Fresh - Good condition',
+                  ),
                 ],
               ),
               const SizedBox(height: 12),
               // Warning status
               Row(
                 children: [
-                  const ExpiryBadge(status: ExpiryStatus.expiringSoon),
-                  const SizedBox(width: 16),
-                  const Text('Expiring Soon - Check soon'),
+                  const ExpiryBadge(
+                    status: ExpiryStatus.expiringSoon,
+                    text: 'Expiring Soon - Check soon',
+                  ),
                 ],
               ),
               const SizedBox(height: 12),
               // Critical status
               Row(
                 children: [
-                  const ExpiryBadge(status: ExpiryStatus.expired),
-                  const SizedBox(width: 16),
-                  const Text('Expired - Discard'),
+                  const ExpiryBadge(
+                    status: ExpiryStatus.expired,
+                    text: 'Expired - Discard',
+                  ),
                 ],
               ),
               const SizedBox(height: 12),
               // Unknown status
               Row(
                 children: [
-                  const ExpiryBadge(status: ExpiryStatus.unknown),
-                  const SizedBox(width: 16),
-                  const Text('Unknown - Check manually'),
+                  const ExpiryBadge(
+                    status: ExpiryStatus.unknown,
+                    text: 'Unknown - Check manually',
+                  ),
                 ],
               ),
             ],

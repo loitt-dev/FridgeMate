@@ -1,3 +1,4 @@
+import 'package:design_system/values/color/app_color.dart';
 import 'package:flutter/material.dart';
 import '../../values/dimen/app_dimen.dart';
 
@@ -11,7 +12,7 @@ class AppDropdown<T> extends StatelessWidget {
   final bool enabled;
   final Widget? prefixIcon;
   final String? Function(T?)? validator;
-  
+
   const AppDropdown({
     super.key,
     this.label,
@@ -24,7 +25,7 @@ class AppDropdown<T> extends StatelessWidget {
     this.prefixIcon,
     this.validator,
   });
-  
+
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<T>(
@@ -39,15 +40,19 @@ class AppDropdown<T> extends StatelessWidget {
         prefixIcon: prefixIcon,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppDimen.radiusMedium),
+          borderSide: BorderSide(color: AppColor.outline, width: 1.5),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppDimen.radiusMedium),
+          borderSide: BorderSide(color: AppColor.outline, width: 1.5),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppDimen.radiusMedium),
+          borderSide: BorderSide(color: AppColor.outline, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppDimen.radiusMedium),
+          borderSide: BorderSide(color: AppColor.error, width: 1.5),
         ),
         contentPadding: const EdgeInsets.symmetric(
           horizontal: AppDimen.paddingMedium,

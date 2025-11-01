@@ -13,17 +13,8 @@ class ChipsShowcase extends StatefulWidget {
 }
 
 class _ChipsShowcaseState extends State<ChipsShowcase> {
-  final List<String> _selectedCategories = ['Food'];
-  final List<String> _availableCategories = [
-    'Food',
-    'Drinks',
-    'Snacks',
-    'Dairy',
-    'Meat',
-    'Vegetables',
-    'Fruits',
-    'Bakery',
-  ];
+  final List<CategoryType> _selectedCategories = [CategoryType.beverage];
+  final List<CategoryType> _availableCategories = CategoryType.values;
 
   @override
   Widget build(BuildContext context) {
@@ -48,8 +39,8 @@ class _ChipsShowcaseState extends State<ChipsShowcase> {
                 children: _availableCategories.map((category) {
                   final isSelected = _selectedCategories.contains(category);
                   return CategoryChip(
-                    label: category,
-                    category: CategoryType.other, // Default category
+                    label: category.name,
+                    category: category, // Default category
                     isSelected: isSelected,
                     onTap: () {
                       setState(() {

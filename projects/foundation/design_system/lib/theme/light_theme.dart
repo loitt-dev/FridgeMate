@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
 import '../values/color/app_color.dart';
 import '../values/typography/app_font_size.dart';
+import '../values/typography/app_font_family.dart';
 import '../values/dimen/app_dimen.dart';
 
-/// Light theme configuration following Material 3 design principles
+/// Cấu hình light theme tuân theo nguyên tắc thiết kế Material 3
 class LightTheme {
   static ThemeData get theme => ThemeData(
     useMaterial3: true,
+    materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
     brightness: Brightness.light,
+    fontFamily: AppFontFamily.primary,
     colorScheme: _colorScheme,
     textTheme: _textTheme,
     appBarTheme: _appBarTheme,
@@ -30,45 +33,51 @@ class LightTheme {
     snackBarTheme: _snackBarTheme,
     dividerTheme: _dividerTheme,
     listTileTheme: _listTileTheme,
+    tabBarTheme: TabBarThemeData(
+      unselectedLabelStyle: TextStyle(
+        color: AppColor.onPrimary.withValues(alpha: 0.5),
+      ),
+      labelStyle: TextStyle(color: AppColor.onPrimary),
+    ),
   );
 
-  /// Light color scheme based on Material 3
+  /// Bảng màu light theme dựa trên Material 3
   static ColorScheme get _colorScheme => const ColorScheme.light(
-    // Primary colors
+    // Màu chính
     primary: AppColor.primary,
     onPrimary: AppColor.onPrimary,
     primaryContainer: AppColor.primaryContainer,
     onPrimaryContainer: AppColor.onPrimaryContainer,
 
-    // Secondary colors
+    // Màu phụ
     secondary: AppColor.secondary,
     onSecondary: AppColor.onSecondary,
     secondaryContainer: AppColor.secondaryContainer,
     onSecondaryContainer: AppColor.onSecondaryContainer,
 
-    // Tertiary colors
+    // Màu bổ trợ
     tertiary: AppColor.tertiary,
     onTertiary: AppColor.onTertiary,
     tertiaryContainer: AppColor.tertiaryContainer,
     onTertiaryContainer: AppColor.onTertiaryContainer,
 
-    // Error colors
+    // Màu lỗi
     error: AppColor.error,
     onError: AppColor.onError,
     errorContainer: AppColor.errorContainer,
     onErrorContainer: AppColor.onErrorContainer,
 
-    // Surface colors
+    // Màu bề mặt
     surface: AppColor.surface,
     onSurface: AppColor.onSurface,
     surfaceContainerHighest: AppColor.surfaceVariant,
     onSurfaceVariant: AppColor.onSurfaceVariant,
 
-    // Outline colors
+    // Màu viền
     outline: AppColor.outline,
     outlineVariant: AppColor.outlineVariant,
 
-    // Shadow and scrim
+    // Bóng và lớp phủ
     shadow: AppColor.shadow,
     scrim: AppColor.scrim,
     inverseSurface: AppColor.inverseSurface,
@@ -135,7 +144,7 @@ class LightTheme {
     bodySmall: TextStyle(
       fontSize: AppFontSize.bodySmall,
       fontWeight: FontWeight.normal,
-      color: AppColor.textSecondary, // #818181
+      color: AppColor.textSecondary, // Màu xám #818181
     ),
     labelLarge: TextStyle(
       fontSize: AppFontSize.labelLarge,
@@ -150,37 +159,36 @@ class LightTheme {
     labelSmall: TextStyle(
       fontSize: AppFontSize.labelSmall,
       fontWeight: FontWeight.w500,
-      color: AppColor.textSecondary, // #818181
+      color: AppColor.textSecondary, // Màu xám #818181
     ),
   );
 
   static AppBarTheme get _appBarTheme => const AppBarTheme(
-    backgroundColor: AppColor.navBarBackground, // Green background
-    foregroundColor: AppColor.navBarIcon, // White icons
-    elevation: 0, // No elevation for flat design
+    backgroundColor: AppColor.navBarBackground, // Nền màu xanh
+    foregroundColor: AppColor.navBarIcon, // Icon màu trắng
+    elevation: 0, // Không có độ nổi cho thiết kế phẳng
     centerTitle: true,
     titleTextStyle: TextStyle(
       fontSize: AppFontSize.titleLarge,
       fontWeight: FontWeight.w600,
-      color: AppColor.navBarIcon, // White text
+      color: AppColor.navBarIcon, // Chữ màu trắng
     ),
   );
 
   static ElevatedButtonThemeData get _elevatedButtonTheme =>
       ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColor.buttonPrimary, // Dark grey/black
-          foregroundColor: AppColor.buttonPrimaryText, // White text
-          elevation: 0, // Flat design
+          backgroundColor: AppColor.buttonPrimary, // Nền xám đen
+          foregroundColor: AppColor.buttonPrimaryText, // Chữ màu trắng
+          elevation: 0, // Thiết kế phẳng
           shadowColor: Colors.transparent,
           padding: const EdgeInsets.symmetric(
             horizontal: AppDimen.paddingLarge,
-            vertical: AppDimen.paddingMedium,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
               AppDimen.radiusLarge,
-            ), // More rounded
+            ), // Bo tròn hơn
           ),
           minimumSize: const Size(0, AppDimen.buttonHeightLarge),
         ),
@@ -189,16 +197,15 @@ class LightTheme {
   static OutlinedButtonThemeData get _outlinedButtonTheme =>
       OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
-          foregroundColor: AppColor.primary, // Muted green
+          foregroundColor: AppColor.primary, // Xanh nhạt
           side: const BorderSide(color: AppColor.outline, width: 1.5),
           padding: const EdgeInsets.symmetric(
             horizontal: AppDimen.paddingLarge,
-            vertical: AppDimen.paddingMedium,
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
               AppDimen.radiusLarge,
-            ), // More rounded
+            ), // Bo tròn hơn
           ),
           minimumSize: const Size(0, AppDimen.buttonHeightLarge),
         ),
@@ -208,10 +215,7 @@ class LightTheme {
     style: FilledButton.styleFrom(
       backgroundColor: AppColor.primary,
       foregroundColor: AppColor.onPrimary,
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppDimen.paddingLarge,
-        vertical: AppDimen.paddingMedium,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: AppDimen.paddingLarge),
       minimumSize: const Size(0, AppDimen.buttonHeightLarge),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppDimen.radiusLarge),
@@ -222,10 +226,7 @@ class LightTheme {
   static TextButtonThemeData get _textButtonTheme => TextButtonThemeData(
     style: TextButton.styleFrom(
       foregroundColor: AppColor.primary,
-      padding: const EdgeInsets.symmetric(
-        horizontal: AppDimen.paddingMedium,
-        vertical: AppDimen.paddingSmall,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: AppDimen.paddingMedium),
       minimumSize: const Size(0, AppDimen.buttonHeightLarge),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppDimen.radiusLarge),
@@ -235,43 +236,43 @@ class LightTheme {
 
   static InputDecorationTheme get _inputDecorationTheme => InputDecorationTheme(
     filled: true,
-    fillColor: AppColor.searchBarBackground, // Light beige
+    fillColor: AppColor.searchBarBackground, // Nền be nhạt
     border: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(AppDimen.radiusPill), // Pill shape
-      borderSide: BorderSide.none, // No border
+      borderRadius: BorderRadius.circular(AppDimen.radiusMedium),
+      borderSide: BorderSide(color: AppColor.outline),
     ),
     enabledBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(AppDimen.radiusPill),
-      borderSide: BorderSide.none,
+      borderRadius: BorderRadius.circular(AppDimen.radiusMedium),
+      borderSide: BorderSide(color: AppColor.outline),
     ),
     focusedBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(AppDimen.radiusPill),
-      borderSide: BorderSide.none,
+      borderRadius: BorderRadius.circular(AppDimen.radiusMedium),
+      borderSide: BorderSide(color: AppColor.primary, width: 2),
     ),
     errorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(AppDimen.radiusPill),
+      borderRadius: BorderRadius.circular(AppDimen.radiusMedium),
       borderSide: const BorderSide(color: AppColor.error),
     ),
     focusedErrorBorder: OutlineInputBorder(
-      borderRadius: BorderRadius.circular(AppDimen.radiusPill),
+      borderRadius: BorderRadius.circular(AppDimen.radiusMedium),
       borderSide: const BorderSide(color: AppColor.error, width: 2),
     ),
     contentPadding: const EdgeInsets.symmetric(
       horizontal: AppDimen.paddingLarge,
       vertical: AppDimen.paddingLarge,
     ),
-    labelStyle: const TextStyle(color: AppColor.searchBarText), // Muted green
-    hintStyle: const TextStyle(color: AppColor.searchBarText), // Muted green
+    labelStyle: const TextStyle(color: AppColor.searchBarText), // Xanh nhạt
+    hintStyle: const TextStyle(color: AppColor.searchBarText), // Xanh nhạt
   );
 
   static CardThemeData get _cardTheme => CardThemeData(
-    color: AppColor.cardBackground, // Marble white
-    elevation: 0, // Flat design
+    color: AppColor.cardBackground, // Nền trắng cẩm thạch
+    elevation: 4, // Thiết kế phẳng
     shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(AppDimen.radiusLarge), // More rounded
+      borderRadius: BorderRadius.circular(AppDimen.radiusLarge), // Bo tròn hơn
     ),
     margin: const EdgeInsets.all(AppDimen.paddingSmall),
-    shadowColor: AppColor.cardShadow, // Subtle shadow
+    shadowColor: AppColor.cardShadow, // Bóng nhẹ
     surfaceTintColor: Colors.transparent,
   );
 
@@ -293,14 +294,20 @@ class LightTheme {
       );
 
   static ChipThemeData get _chipTheme => ChipThemeData(
-    backgroundColor: AppColor.surfaceVariant,
-    selectedColor: AppColor.primaryContainer,
+    color: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
+        return AppColor.primary;
+      }
+      return AppColor.surface;
+    }),
     labelStyle: const TextStyle(
       fontSize: AppFontSize.chip,
       color: AppColor.onSurface,
     ),
+    checkmarkColor: AppColor.onPrimary,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(AppDimen.radiusCircular),
+      side: BorderSide(color: AppColor.outline, width: 1.5),
     ),
     padding: const EdgeInsets.symmetric(
       horizontal: AppDimen.paddingSmall,
@@ -315,11 +322,17 @@ class LightTheme {
       }
       return AppColor.outline;
     }),
+    trackOutlineColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
+        return AppColor.primary;
+      }
+      return AppColor.outline;
+    }),
     trackColor: WidgetStateProperty.resolveWith((states) {
       if (states.contains(WidgetState.selected)) {
         return AppColor.primaryContainer;
       }
-      return AppColor.surfaceVariant;
+      return AppColor.primary.withValues(alpha: 0.08);
     }),
   );
 
@@ -328,10 +341,10 @@ class LightTheme {
       if (states.contains(WidgetState.selected)) {
         return AppColor.primary;
       }
-      return AppColor.transparent;
+      return AppColor.primary.withValues(alpha: 0.08);
     }),
     checkColor: WidgetStateProperty.all(AppColor.onPrimary),
-    side: const BorderSide(color: AppColor.outline),
+    side: const BorderSide(color: AppColor.outline, width: 1.5),
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(AppDimen.radiusXS),
     ),
@@ -343,6 +356,9 @@ class LightTheme {
         return AppColor.primary;
       }
       return AppColor.outline;
+    }),
+    backgroundColor: WidgetStateProperty.resolveWith((states) {
+      return AppColor.primary.withValues(alpha: 0.08);
     }),
   );
 

@@ -1,3 +1,6 @@
+import 'package:circle_nav_bar/circle_nav_bar.dart';
+import 'package:common/common.dart';
+import 'package:design_system/components/system/app_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:domain/domain.dart';
@@ -28,25 +31,6 @@ class _FridgeHomeScreenState extends ConsumerState<FridgeHomeScreen> {
   void _onBottomNavTap(int index) {
     // Update selected index in ViewModel
     ref.read(fridgeHomeViewModelProvider.notifier).updateBottomNavIndex(index);
-
-    // Navigate to different screens based on index
-    switch (index) {
-      case 0:
-        // Already on home screen
-        break;
-      case 1:
-        _navigateToFridge();
-        break;
-      case 2:
-        _navigateToRecipes();
-        break;
-      case 3:
-        _navigateToShopping();
-        break;
-      case 4:
-        _navigateToSettings();
-        break;
-    }
   }
 
   // Navigation methods
@@ -219,42 +203,85 @@ class _FridgeHomeScreenState extends ConsumerState<FridgeHomeScreen> {
                 ],
               ),
       ),
-      floatingActionButton: FloatingActionButton.small(
-        onPressed: _showQuickAddDialog,
-        child: const Icon(Icons.add),
+      floatingActionButton: SizedBox(
+        width: 56,
+        height: 56,
+        child: FittedBox(
+          child: FloatingActionButton(
+            onPressed: _showQuickAddDialog,
+            elevation: 0,
+            splashColor: Colors.transparent,
+            child: const Icon(Icons.add, color: Colors.white),
+            backgroundColor: context.primaryColor,
+          ),
+        ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: state.selectedBottomNavIndex,
+      floatingActionButtonLocation: const AppNavigationBarFabLocation(),
+      bottomNavigationBar: AppNavigationBar(
+        activeIndex: state.selectedBottomNavIndex,
         onTap: _onBottomNavTap,
-        type: BottomNavigationBarType.fixed,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
-            label: 'Trang chủ',
+        activeIcons: [
+          Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).padding.bottom,
+            ),
+            child: Icon(Icons.person, color: context.primaryColor),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.kitchen_outlined),
-            activeIcon: Icon(Icons.kitchen),
-            label: 'Tủ lạnh',
+          Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).padding.bottom,
+            ),
+            child: Icon(Icons.favorite, color: context.primaryColor),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.restaurant_menu_outlined),
-            activeIcon: Icon(Icons.restaurant_menu),
-            label: 'Thực đơn',
+          Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).padding.bottom,
+            ),
+            child: Icon(Icons.favorite, color: context.primaryColor),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart_outlined),
-            activeIcon: Icon(Icons.shopping_cart),
-            label: 'Mua sắm',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings_outlined),
-            activeIcon: Icon(Icons.settings),
-            label: 'Cài đặt',
+          Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).padding.bottom,
+            ),
+            child: Icon(Icons.favorite, color: context.primaryColor),
           ),
         ],
+        inactiveIcons: [
+          Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).padding.bottom,
+            ),
+            child: Icon(Icons.person_outline, color: Colors.grey),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).padding.bottom,
+            ),
+            child: Icon(Icons.person_outline, color: Colors.grey),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).padding.bottom,
+            ),
+            child: Icon(Icons.favorite_border, color: Colors.grey),
+          ),
+          Padding(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).padding.bottom,
+            ),
+            child: Icon(Icons.favorite_border, color: Colors.grey),
+          ),
+        ],
+        color: Colors.white,
+        circleColor: Colors.transparent,
+        height:
+            kBottomNavigationBarHeight + MediaQuery.of(context).padding.bottom,
+        circleWidth: kBottomNavigationBarHeight,
+        circleShadowColor: context.primaryColor,
+        shadowColor: context.primaryColor,
+        cornerRadius: BorderRadius.circular(16),
+        elevation: 8,
+        padding: EdgeInsets.zero,
       ),
     );
   }

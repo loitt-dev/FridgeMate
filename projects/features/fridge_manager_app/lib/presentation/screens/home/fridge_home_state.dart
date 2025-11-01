@@ -39,7 +39,7 @@ class FridgeHomeState with _$FridgeHomeState {
     @Default([]) List<String> shoppingPreviewItems,
 
     // UI state
-    @Default(0) int selectedBottomNavIndex,
+    @Default(2) int selectedBottomNavIndex,
   }) = _FridgeHomeState;
 
   /// Initial state factory

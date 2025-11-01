@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import '../values/color/app_color.dart';
 import '../values/typography/app_font_size.dart';
+import '../values/typography/app_font_family.dart';
 import '../values/dimen/app_dimen.dart';
 
-/// Dark theme configuration following Material 3 design principles
+/// Cấu hình dark theme tuân theo nguyên tắc thiết kế Material 3
 class DarkTheme {
   static ThemeData get theme => ThemeData(
     useMaterial3: true,
     brightness: Brightness.dark,
+    fontFamily: AppFontFamily.primary,
     colorScheme: _colorScheme,
     textTheme: _textTheme,
     appBarTheme: _appBarTheme,
@@ -30,45 +32,51 @@ class DarkTheme {
     snackBarTheme: _snackBarTheme,
     dividerTheme: _dividerTheme,
     listTileTheme: _listTileTheme,
+    tabBarTheme: TabBarThemeData(
+      unselectedLabelStyle: TextStyle(
+        color: AppColor.onPrimary.withValues(alpha: 0.5),
+      ),
+      labelStyle: TextStyle(color: AppColor.onPrimary),
+    ),
   );
 
-  /// Dark color scheme based on Material 3
+  /// Bảng màu dark theme dựa trên Material 3
   static ColorScheme get _colorScheme => const ColorScheme.dark(
-    // Primary colors
+    // Màu chính
     primary: AppColor.primary,
     onPrimary: AppColor.onPrimary,
     primaryContainer: AppColor.primaryContainer,
     onPrimaryContainer: AppColor.onPrimaryContainer,
 
-    // Secondary colors
+    // Màu phụ
     secondary: AppColor.secondary,
     onSecondary: AppColor.onSecondary,
     secondaryContainer: AppColor.secondaryContainer,
     onSecondaryContainer: AppColor.onSecondaryContainer,
 
-    // Tertiary colors
+    // Màu bổ trợ
     tertiary: AppColor.tertiary,
     onTertiary: AppColor.onTertiary,
     tertiaryContainer: AppColor.tertiaryContainer,
     onTertiaryContainer: AppColor.onTertiaryContainer,
 
-    // Error colors
+    // Màu lỗi
     error: AppColor.error,
     onError: AppColor.onError,
     errorContainer: AppColor.errorContainer,
     onErrorContainer: AppColor.onErrorContainer,
 
-    // Surface colors
+    // Màu bề mặt
     surface: AppColor.surfaceDark,
     onSurface: AppColor.onSurfaceDark,
     surfaceContainerHighest: AppColor.surfaceVariantDark,
     onSurfaceVariant: AppColor.onSurfaceVariantDark,
 
-    // Outline colors
+    // Màu viền
     outline: AppColor.outlineDark,
     outlineVariant: AppColor.outlineVariantDark,
 
-    // Shadow and scrim
+    // Bóng và lớp phủ
     shadow: AppColor.shadow,
     scrim: AppColor.scrim,
     inverseSurface: AppColor.inverseSurface,
@@ -155,23 +163,23 @@ class DarkTheme {
   );
 
   static AppBarTheme get _appBarTheme => const AppBarTheme(
-    backgroundColor: AppColor.navBarBackground, // Green background
-    foregroundColor: AppColor.navBarIcon, // White icons
+    backgroundColor: AppColor.surfaceDark,
+    foregroundColor: AppColor.navBarIcon, // Icon màu trắng
     elevation: 0,
     centerTitle: true,
     titleTextStyle: TextStyle(
       fontSize: AppFontSize.titleLarge,
       fontWeight: FontWeight.w600,
-      color: AppColor.navBarIcon, // White text
+      color: AppColor.navBarIcon, // Chữ màu trắng
     ),
   );
 
   static ElevatedButtonThemeData get _elevatedButtonTheme =>
       ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColor.buttonPrimary, // Dark grey/black
-          foregroundColor: AppColor.buttonPrimaryText, // White text
-          elevation: 0, // Flat design
+          backgroundColor: AppColor.buttonPrimary, // Nền xám đen
+          foregroundColor: AppColor.buttonPrimaryText, // Chữ màu trắng
+          elevation: 0, // Thiết kế phẳng
           shadowColor: Colors.transparent,
           padding: const EdgeInsets.symmetric(
             horizontal: AppDimen.paddingLarge,
@@ -180,7 +188,7 @@ class DarkTheme {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(
               AppDimen.radiusLarge,
-            ), // More rounded
+            ), // Bo tròn hơn
           ),
           minimumSize: const Size(0, AppDimen.buttonHeightLarge),
         ),
@@ -308,9 +316,15 @@ class DarkTheme {
       }
       return AppColor.outlineDark;
     }),
+    trackOutlineColor: WidgetStateProperty.resolveWith((states) {
+      if (states.contains(WidgetState.selected)) {
+        return AppColor.primary;
+      }
+      return AppColor.outlineDark;
+    }),
     trackColor: WidgetStateProperty.resolveWith((states) {
       if (states.contains(WidgetState.selected)) {
-        return AppColor.primaryContainer;
+        return AppColor.surfaceDark.withValues(alpha: 0.08);
       }
       return AppColor.surfaceVariantDark;
     }),

@@ -76,7 +76,6 @@ class FridgeStatsCard extends StatelessWidget {
             color: AppColor.onSurface,
           ),
         ),
-        const SizedBox(height: AppDimen.spacingXS),
         const Text(
           'Sản phẩm trong tủ lạnh',
           style: TextStyle(

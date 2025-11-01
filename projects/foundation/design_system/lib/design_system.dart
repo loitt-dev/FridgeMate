@@ -25,6 +25,7 @@ export 'values/values.dart';
 export 'values/color/app_color.dart';
 export 'values/dimen/app_dimen.dart';
 export 'values/typography/app_font_size.dart';
+export 'values/typography/app_font_family.dart';
 
 // ============================================
 // COMPONENTS
@@ -35,3 +36,8 @@ export 'components/components.dart';
 // RESOURCES
 // ============================================
 export 'resources/app_icons.dart';
+
+// ============================================
+// GENERATED ASSETS
+// ============================================
+export 'gen/assets.gen.dart';

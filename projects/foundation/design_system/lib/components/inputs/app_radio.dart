@@ -7,7 +7,7 @@ class AppRadio<T> extends StatelessWidget {
   final String? label;
   final bool enabled;
   final Color? activeColor;
-  
+
   const AppRadio({
     super.key,
     required this.value,
@@ -17,35 +17,44 @@ class AppRadio<T> extends StatelessWidget {
     this.enabled = true,
     this.activeColor,
   });
-  
+
   @override
-  Widget build(BuildContext context) {  
+  Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    
+
     Widget radio = Radio<T>(
       value: value,
       groupValue: groupValue,
       onChanged: enabled ? onChanged : null,
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       activeColor: activeColor ?? colorScheme.primary,
     );
-    
+
     if (label != null) {
       radio = Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           radio,
-          const SizedBox(width: 8),
-          Text(
-            label!,
-            style: theme.textTheme.bodyMedium?.copyWith(
-              color: enabled ? null : colorScheme.onSurface.withValues(alpha: 0.6),
+          GestureDetector(
+            onTap: () {
+              if (enabled) {
+                onChanged?.call(value);
+              }
+            },
+            child: Text(
+              label!,
+              style: theme.textTheme.bodyMedium?.copyWith(
+                color: enabled
+                    ? null
+                    : colorScheme.onSurface.withValues(alpha: 0.6),
+              ),
             ),
           ),
         ],
       );
     }
-    
+
     return radio;
   }
 }

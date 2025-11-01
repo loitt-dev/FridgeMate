@@ -1,3 +1,4 @@
+import 'package:design_system/values/color/app_color.dart';
 import 'package:flutter/material.dart';
 
 class AppSnackbar {
@@ -9,13 +10,19 @@ class AppSnackbar {
   }) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(message),
+        content: Text(
+          message,
+          style: Theme.of(
+            context,
+          ).textTheme.bodyMedium?.copyWith(color: _getTextColor(type)),
+        ),
         backgroundColor: _getBackgroundColor(
           Theme.of(context).colorScheme,
           type,
         ),
         duration: duration,
         behavior: SnackBarBehavior.floating,
+        dismissDirection: DismissDirection.horizontal,
       ),
     );
   }
@@ -26,13 +33,26 @@ class AppSnackbar {
   ) {
     switch (type) {
       case AppSnackbarType.success:
-        return Colors.green;
+        return AppColor.success;
       case AppSnackbarType.error:
-        return colorScheme.error;
+        return AppColor.error;
       case AppSnackbarType.warning:
-        return Colors.orange;
+        return AppColor.warning;
       case AppSnackbarType.info:
-        return colorScheme.surface;
+        return AppColor.info;
+    }
+  }
+
+  static Color _getTextColor(AppSnackbarType type) {
+    switch (type) {
+      case AppSnackbarType.success:
+        return AppColor.onSuccess;
+      case AppSnackbarType.error:
+        return AppColor.onError;
+      case AppSnackbarType.warning:
+        return AppColor.onWarning;
+      case AppSnackbarType.info:
+        return AppColor.onInfo;
     }
   }
 }

@@ -8,7 +8,7 @@ class AppFab extends StatelessWidget {
   final String? tooltip;
   final Color? backgroundColor;
   final Color? foregroundColor;
-  
+
   const AppFab({
     super.key,
     required this.icon,
@@ -18,30 +18,28 @@ class AppFab extends StatelessWidget {
     this.backgroundColor,
     this.foregroundColor,
   });
-  
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    
+
     Widget fab = FloatingActionButton(
       onPressed: onPressed,
+      heroTag: UniqueKey().toString(),
       backgroundColor: backgroundColor ?? colorScheme.primary,
       foregroundColor: foregroundColor ?? colorScheme.onPrimary,
       elevation: 6,
       child: Icon(icon, size: _getIconSize()),
     );
-    
+
     if (tooltip != null) {
-      fab = Tooltip(
-        message: tooltip!,
-        child: fab,
-      );
+      fab = Tooltip(message: tooltip!, child: fab);
     }
-    
+
     return fab;
   }
-  
+
   double _getIconSize() {
     switch (size) {
       case AppFabSize.small:
@@ -54,8 +52,4 @@ class AppFab extends StatelessWidget {
   }
 }
 
-enum AppFabSize {
-  small,
-  medium,
-  large,
-}
+enum AppFabSize { small, medium, large }

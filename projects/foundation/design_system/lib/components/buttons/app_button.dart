@@ -25,26 +25,24 @@ class AppButton extends StatelessWidget {
     this.icon,
     this.width,
   });
+  bool get isDisabled => !isEnabled || onPressed == null || isLoading;
 
   @override
   Widget build(BuildContext context) {
-    final isDisabled = !isEnabled || onPressed == null || isLoading;
-
     return SizedBox(
       width: width,
       height: _getHeight(),
       child: ElevatedButton(
         onPressed: isDisabled ? null : onPressed,
-        style: _getButtonStyle(),
+        style: _getButtonStyle(context),
         child: isLoading
             ? SizedBox(
                 height: _getIconSize(),
                 width: _getIconSize(),
-                child: const CircularProgressIndicator(
+                child: CircularProgressIndicator(
                   strokeWidth: 2,
-                  valueColor: AlwaysStoppedAnimation<Color>(
-                    AppColor.buttonPrimaryText,
-                  ),
+                  backgroundColor: Colors.transparent,
+                  color: _getForegroundColor(),
                 ),
               )
             : Row(
@@ -61,15 +59,21 @@ class AppButton extends StatelessWidget {
     );
   }
 
-  ButtonStyle _getButtonStyle() {
+  ButtonStyle _getButtonStyle(BuildContext context) {
     return ElevatedButton.styleFrom(
       backgroundColor: _getBackgroundColor(),
-      foregroundColor: _getTextColor(),
+      foregroundColor: _getForegroundColor(),
+      disabledBackgroundColor: _getDisabledBackgroundColor(),
+      disabledForegroundColor: _getDisabledForegroundColor(),
       elevation: 0,
       shadowColor: Colors.transparent,
       padding: _getPadding(),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(_getBorderRadius()),
+        side: BorderSide(
+          color: _getBorderColor(),
+          width: variant == AppButtonVariant.outline ? 1.5 : 0,
+        ),
       ),
       minimumSize: Size(width ?? 0, _getHeight()),
     );
@@ -88,7 +92,7 @@ class AppButton extends StatelessWidget {
     }
   }
 
-  Color _getTextColor() {
+  Color _getForegroundColor() {
     switch (variant) {
       case AppButtonVariant.primary:
         return AppColor.buttonPrimaryText;
@@ -97,7 +101,44 @@ class AppButton extends StatelessWidget {
       case AppButtonVariant.outline:
         return AppColor.primary;
       case AppButtonVariant.ghost:
-        return AppColor.textSecondary;
+        return AppColor.primary;
+    }
+  }
+
+  Color _getBorderColor() {
+    switch (variant) {
+      case AppButtonVariant.outline:
+        return isDisabled
+            ? AppColor.outline.withValues(alpha: 0.5)
+            : AppColor.outline;
+      default:
+        return Colors.transparent;
+    }
+  }
+
+  Color _getDisabledBackgroundColor() {
+    switch (variant) {
+      case AppButtonVariant.primary:
+        return Color(0xFF9e9e9e);
+      case AppButtonVariant.secondary:
+        return AppColor.primary.withValues(alpha: 0.5);
+      case AppButtonVariant.outline:
+        return Colors.transparent;
+      case AppButtonVariant.ghost:
+        return Colors.transparent;
+    }
+  }
+
+  Color _getDisabledForegroundColor() {
+    switch (variant) {
+      case AppButtonVariant.primary:
+        return AppColor.buttonPrimaryText.withValues(alpha: 0.5);
+      case AppButtonVariant.secondary:
+        return AppColor.onPrimary.withValues(alpha: 0.5);
+      case AppButtonVariant.outline:
+        return AppColor.primary.withValues(alpha: 0.5);
+      case AppButtonVariant.ghost:
+        return AppColor.primary.withValues(alpha: 0.5);
     }
   }
 
@@ -105,7 +146,7 @@ class AppButton extends StatelessWidget {
     return TextStyle(
       fontSize: _getFontSize(),
       fontWeight: FontWeight.w600,
-      color: _getTextColor(),
+      color: isDisabled ? _getDisabledForegroundColor() : _getForegroundColor(),
     );
   }
 
@@ -151,25 +192,13 @@ class AppButton extends StatelessWidget {
   EdgeInsets _getPadding() {
     switch (size) {
       case AppButtonSize.small:
-        return const EdgeInsets.symmetric(
-          horizontal: AppDimen.paddingMedium,
-          vertical: AppDimen.paddingSmall,
-        );
+        return const EdgeInsets.symmetric(horizontal: AppDimen.paddingMedium);
       case AppButtonSize.medium:
-        return const EdgeInsets.symmetric(
-          horizontal: AppDimen.paddingLarge,
-          vertical: AppDimen.paddingMedium,
-        );
+        return const EdgeInsets.symmetric(horizontal: AppDimen.paddingLarge);
       case AppButtonSize.large:
-        return const EdgeInsets.symmetric(
-          horizontal: AppDimen.paddingXL,
-          vertical: AppDimen.paddingLarge,
-        );
+        return const EdgeInsets.symmetric(horizontal: AppDimen.paddingXL);
       case AppButtonSize.xl:
-        return const EdgeInsets.symmetric(
-          horizontal: AppDimen.paddingXXL,
-          vertical: AppDimen.paddingXL,
-        );
+        return const EdgeInsets.symmetric(horizontal: AppDimen.paddingXXL);
     }
   }
 

@@ -1,91 +1,91 @@
-/// FridgeMate typography system following Material 3 design principles
+/// Hệ thống typography cho FridgeMate tuân theo nguyên tắc thiết kế Material 3
 ///
-/// This class defines all font sizes used throughout the FridgeMate app
-/// for consistent typography and readability.
+/// Lớp này định nghĩa tất cả các kích thước font được sử dụng trong toàn bộ ứng dụng FridgeMate
+/// để đảm bảo typography nhất quán và dễ đọc.
 class AppFontSize {
   // ============================================
-  // DISPLAY TEXT SIZES - For large headings
+  // KÍCH THƯỚC DISPLAY TEXT - Cho tiêu đề lớn
   // ============================================
-  static const double displayLarge = 57.0; // Hero text, main titles
-  static const double displayMedium = 45.0; // Section headers
-  static const double displaySmall = 36.0; // Page titles
-
-  // ============================================
-  // HEADLINE SIZES - For section headers
-  // ============================================
-  static const double headlineLarge = 32.0; // Major section headers
-  static const double headlineMedium = 28.0; // Subsection headers
-  static const double headlineSmall = 24.0; // Card titles, list headers
+  static const double displayLarge = 57.0; // Text hero, tiêu đề chính
+  static const double displayMedium = 45.0; // Tiêu đề phần
+  static const double displaySmall = 36.0; // Tiêu đề trang
 
   // ============================================
-  // TITLE SIZES - For card and list titles
+  // KÍCH THƯỚC HEADLINE - Cho tiêu đề phần
   // ============================================
-  static const double titleLarge = 22.0; // Card titles, dialog titles
-  static const double titleMedium = 16.0; // List item titles
-  static const double titleSmall = 14.0; // Small card titles
-
-  // ============================================
-  // BODY TEXT SIZES - For main content
-  // ============================================
-  static const double bodyLarge = 16.0; // Main content text
-  static const double bodyMedium = 14.0; // Secondary content
-  static const double bodySmall = 12.0; // Captions, metadata
+  static const double headlineLarge = 32.0; // Tiêu đề phần chính
+  static const double headlineMedium = 28.0; // Tiêu đề phần phụ
+  static const double headlineSmall = 24.0; // Tiêu đề card, tiêu đề danh sách
 
   // ============================================
-  // LABEL SIZES - For form labels and buttons
+  // KÍCH THƯỚC TITLE - Cho tiêu đề card và danh sách
   // ============================================
-  static const double labelLarge = 14.0; // Button text, form labels
-  static const double labelMedium = 12.0; // Small buttons, chips
-  static const double labelSmall = 11.0; // Tiny labels, badges
+  static const double titleLarge = 22.0; // Tiêu đề card, tiêu đề dialog
+  static const double titleMedium = 16.0; // Tiêu đề item trong danh sách
+  static const double titleSmall = 14.0; // Tiêu đề card nhỏ
 
   // ============================================
-  // FRIDGEMATE SPECIFIC SIZES
+  // KÍCH THƯỚC BODY TEXT - Cho nội dung chính
+  // ============================================
+  static const double bodyLarge = 16.0; // Text nội dung chính
+  static const double bodyMedium = 14.0; // Nội dung phụ
+  static const double bodySmall = 12.0; // Chú thích, metadata
+
+  // ============================================
+  // KÍCH THƯỚC LABEL - Cho nhãn form và nút
+  // ============================================
+  static const double labelLarge = 14.0; // Text nút, nhãn form
+  static const double labelMedium = 12.0; // Nút nhỏ, chip
+  static const double labelSmall = 11.0; // Nhãn nhỏ, badge
+
+  // ============================================
+  // KÍCH THƯỚC RIÊNG CHO FRIDGEMATE
   // ============================================
 
-  // Item and recipe specific
-  static const double itemName = 16.0; // Item names in cards
-  static const double itemDescription = 14.0; // Item descriptions
-  static const double itemMetadata = 12.0; // Expiry dates, quantities
-  static const double itemPrice = 14.0; // Price information
+  // Dành cho item và công thức
+  static const double itemName = 16.0; // Tên item trong card
+  static const double itemDescription = 14.0; // Mô tả item
+  static const double itemMetadata = 12.0; // Ngày hết hạn, số lượng
+  static const double itemPrice = 14.0; // Thông tin giá
 
-  // Recipe specific
-  static const double recipeTitle = 18.0; // Recipe card titles
-  static const double recipeDescription = 14.0; // Recipe descriptions
-  static const double recipeTime = 12.0; // Cooking time
-  static const double recipeServings = 12.0; // Serving information
+  // Dành cho công thức
+  static const double recipeTitle = 18.0; // Tiêu đề card công thức
+  static const double recipeDescription = 14.0; // Mô tả công thức
+  static const double recipeTime = 12.0; // Thời gian nấu
+  static const double recipeServings = 12.0; // Thông tin khẩu phần
 
-  // Shopping list specific
-  static const double shoppingItem = 16.0; // Shopping list items
-  static const double shoppingQuantity = 14.0; // Quantities
-  static const double shoppingPrice = 14.0; // Price totals
+  // Dành cho danh sách mua sắm
+  static const double shoppingItem = 16.0; // Item trong danh sách mua sắm
+  static const double shoppingQuantity = 14.0; // Số lượng
+  static const double shoppingPrice = 14.0; // Tổng giá
 
-  // Navigation and UI elements
-  static const double appBar = 20.0; // App bar titles
-  static const double bottomNav = 12.0; // Bottom navigation labels
-  static const double tabLabel = 14.0; // Tab labels
-  static const double drawerItem = 16.0; // Drawer menu items
+  // Điều hướng và phần tử UI
+  static const double appBar = 20.0; // Tiêu đề app bar
+  static const double bottomNav = 12.0; // Nhãn bottom navigation
+  static const double tabLabel = 14.0; // Nhãn tab
+  static const double drawerItem = 16.0; // Item trong drawer menu
 
-  // Form elements
-  static const double input = 16.0; // Text input fields
-  static const double inputLabel = 14.0; // Form field labels
-  static const double inputHint = 14.0; // Input hints
-  static const double inputError = 12.0; // Error messages
+  // Phần tử form
+  static const double input = 16.0; // Trường nhập text
+  static const double inputLabel = 14.0; // Nhãn trường form
+  static const double inputHint = 14.0; // Gợi ý nhập
+  static const double inputError = 12.0; // Thông báo lỗi
 
-  // Interactive elements
-  static const double button = 14.0; // Button text
-  static const double chip = 12.0; // Chip labels
-  static const double badge = 10.0; // Badge text
-  static const double tooltip = 12.0; // Tooltip text
+  // Phần tử tương tác
+  static const double button = 14.0; // Text nút
+  static const double chip = 12.0; // Nhãn chip
+  static const double badge = 10.0; // Text badge
+  static const double tooltip = 12.0; // Text tooltip
 
-  // Status and feedback
-  static const double caption = 10.0; // Small captions
-  static const double overline = 10.0; // Overline text
-  static const double error = 12.0; // Error messages
-  static const double success = 12.0; // Success messages
-  static const double warning = 12.0; // Warning messages
+  // Trạng thái và phản hồi
+  static const double caption = 10.0; // Chú thích nhỏ
+  static const double overline = 10.0; // Text overline
+  static const double error = 12.0; // Thông báo lỗi
+  static const double success = 12.0; // Thông báo thành công
+  static const double warning = 12.0; // Thông báo cảnh báo
 
-  // Special cases
-  static const double hero = 48.0; // Hero text on landing
-  static const double splash = 24.0; // Splash screen text
-  static const double onboarding = 18.0; // Onboarding text
+  // Trường hợp đặc biệt
+  static const double hero = 48.0; // Text hero trên landing
+  static const double splash = 24.0; // Text splash screen
+  static const double onboarding = 18.0; // Text onboarding
 }

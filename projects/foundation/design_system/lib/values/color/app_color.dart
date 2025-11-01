@@ -53,11 +53,11 @@ class AppColor {
   static const Color warningContainer = Color(0xFFFFF3E0); // Orange 50
   static const Color onWarningContainer = Color(0xFFE65100); // Dark orange
 
-  // Info colors - Blue for general information
-  static const Color info = Color(0xFF2196F3); // Blue 500
+  // Info colors - Dark grey for general information
+  static const Color info = Color(0xFF1E1E1E); // Dark grey
   static const Color onInfo = Color(0xFFFFFFFF);
-  static const Color infoContainer = Color(0xFFE3F2FD); // Blue 50
-  static const Color onInfoContainer = Color(0xFF0D47A1); // Dark blue
+  static const Color infoContainer = Color(0xFFF1F6F3); // Light beige-green
+  static const Color onInfoContainer = Color(0xFFFFFFFF); // White
 
   // ============================================
   // SURFACE COLORS - Light Theme (Enhanced)
@@ -222,7 +222,7 @@ class AppColor {
 
   // Card colors
   static const Color cardBackground = Color(0xFFFFFFFF); // Marble white
-  static const Color cardShadow = Color(0x1A000000); // Subtle shadow
+  static const Color cardShadow = Color.fromARGB(49, 0, 0, 0); // Subtle shadow
 
   // Icon colors
   static const Color iconPrimary = Color(0xFF75A488); // Muted green

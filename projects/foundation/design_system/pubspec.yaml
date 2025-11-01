@@ -16,8 +16,23 @@ dependencies:
   # ❌ NO get_it
   # ❌ NO state management dependencies
 
+# Cấu hình Flutter assets
+flutter:
+  # Assets cho design system
+  assets:
+    - assets/images/
+    - assets/icons/
+
+# Cấu hình flutter_gen cho asset generation
+flutter_gen:
+  output: lib/gen/
+  assets:
+    outputs:
+      package_parameter_enabled: true
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
   build_runner: ^2.4.0
+  flutter_gen_runner: ^5.12.0

@@ -8,7 +8,7 @@ class AppDialog extends StatelessWidget {
   final bool barrierDismissible;
   final Color? backgroundColor;
   final EdgeInsetsGeometry? contentPadding;
-  
+
   const AppDialog({
     super.key,
     this.title,
@@ -18,28 +18,33 @@ class AppDialog extends StatelessWidget {
     this.backgroundColor,
     this.contentPadding,
   });
-  
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
-    
+
     return AlertDialog(
       title: title != null ? Text(title!) : null,
       content: content,
       actions: actions,
+      
       backgroundColor: backgroundColor ?? colorScheme.surface,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppDimen.radiusLarge),
       ),
-      contentPadding: contentPadding ?? const EdgeInsets.all(AppDimen.paddingLarge),
+      titlePadding:
+          contentPadding ?? const EdgeInsets.all(AppDimen.paddingLarge),
+      contentPadding:
+          contentPadding ??
+          const EdgeInsets.symmetric(horizontal: AppDimen.paddingLarge),
       actionsPadding: const EdgeInsets.symmetric(
         horizontal: AppDimen.paddingLarge,
         vertical: AppDimen.paddingMedium,
       ),
     );
   }
-  
+
   static Future<T?> show<T>({
     required BuildContext context,
     String? title,

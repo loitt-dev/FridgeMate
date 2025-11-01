@@ -44,13 +44,11 @@ class _InputsShowcaseState extends State<InputsShowcase> {
             children: [
               AppTextField(
                 controller: _textController,
-                label: 'Text Field',
                 hint: 'Enter some text...',
               ),
               const SizedBox(height: 12),
               AppTextField(
                 controller: _textController,
-                label: 'Password Field',
                 hint: 'Enter password...',
                 obscureText: true,
               ),
@@ -98,14 +96,13 @@ AppTextField(
             children: [
               AppCheckbox(
                 value: _checkboxValue,
+                label: 'Checkbox Option',
                 onChanged: (value) {
                   setState(() {
                     _checkboxValue = value ?? false;
                   });
                 },
               ),
-              const SizedBox(width: 8),
-              const Text('Checkbox Option'),
             ],
           ),
           codeSnippet: '''AppCheckbox(
@@ -219,6 +216,7 @@ AppTextField(
                     children: [
                       AppRadio<String>(
                         value: option,
+                        label: option,
                         groupValue: _radioValue,
                         onChanged: (value) {
                           setState(() {
@@ -226,8 +224,6 @@ AppTextField(
                           });
                         },
                       ),
-                      const SizedBox(width: 8),
-                      Text(option),
                     ],
                   ),
                 )

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../values/dimen/app_dimen.dart';
 
 class AppTextField extends StatelessWidget {
   final String? label;
@@ -17,7 +16,7 @@ class AppTextField extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final ValueChanged<String>? onSubmitted;
   final String? Function(String?)? validator;
-  
+
   const AppTextField({
     super.key,
     this.label,
@@ -36,7 +35,7 @@ class AppTextField extends StatelessWidget {
     this.onSubmitted,
     this.validator,
   });
-  
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -56,22 +55,6 @@ class AppTextField extends StatelessWidget {
         errorText: errorText,
         prefixIcon: prefixIcon,
         suffixIcon: suffixIcon,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppDimen.radiusMedium),
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppDimen.radiusMedium),
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppDimen.radiusMedium),
-        ),
-        errorBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(AppDimen.radiusMedium),
-        ),
-        contentPadding: const EdgeInsets.symmetric(
-          horizontal: AppDimen.paddingMedium,
-          vertical: AppDimen.paddingMedium,
-        ),
       ),
     );
   }

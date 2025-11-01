@@ -138,7 +138,7 @@ flutter run --flavor medicine
 
 ```bash
 # Generate code cho tất cả modules
-find projects -name "pubspec.yaml" -exec flutter packages pub run build_runner build -C {} \;
+find projects -name "pubspec.yaml" -exec dart packages pub run build_runner build -C {} \;
 ```
 
 ### Testing

@@ -94,85 +94,6 @@ extension ContextExtensions on BuildContext {
   bool get isKeyboardVisible => MediaQuery.of(this).viewInsets.bottom > 0;
 
   // ============================================
-  // Navigation
-  // ============================================
-
-  /// Navigate to route
-  Future<T?> push<T extends Object?>(Route<T> route) {
-    return Navigator.of(this).push(route);
-  }
-
-  /// Navigate to named route
-  Future<T?> pushNamed<T extends Object?>(
-    String routeName, {
-    Object? arguments,
-  }) {
-    return Navigator.of(this).pushNamed<T>(routeName, arguments: arguments);
-  }
-
-  /// Navigate to named route and clear stack
-  Future<T?> pushNamedAndRemoveUntil<T extends Object?>(
-    String routeName,
-    RoutePredicate predicate, {
-    Object? arguments,
-  }) {
-    return Navigator.of(
-      this,
-    ).pushNamedAndRemoveUntil<T>(routeName, predicate, arguments: arguments);
-  }
-
-  /// Navigate to named route and clear all previous routes
-  Future<T?> pushNamedAndClearStack<T extends Object?>(
-    String routeName, {
-    Object? arguments,
-  }) {
-    return Navigator.of(this).pushNamedAndRemoveUntil<T>(
-      routeName,
-      (route) => false,
-      arguments: arguments,
-    );
-  }
-
-  /// Replace current route
-  Future<T?> pushReplacement<T extends Object?, TO extends Object?>(
-    Route<T> route, {
-    TO? result,
-  }) {
-    return Navigator.of(this).pushReplacement<T, TO>(route, result: result);
-  }
-
-  /// Replace current route with named route
-  Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
-    String routeName, {
-    TO? result,
-    Object? arguments,
-  }) {
-    return Navigator.of(this).pushReplacementNamed<T, TO>(
-      routeName,
-      result: result,
-      arguments: arguments,
-    );
-  }
-
-  /// Pop current route
-  void pop<T extends Object?>([T? result]) {
-    Navigator.of(this).pop<T>(result);
-  }
-
-  /// Pop until predicate is true
-  void popUntil(RoutePredicate predicate) {
-    Navigator.of(this).popUntil(predicate);
-  }
-
-  /// Pop to root
-  void popToRoot() {
-    Navigator.of(this).popUntil((route) => route.isFirst);
-  }
-
-  /// Check if can pop
-  bool get canPop => Navigator.of(this).canPop();
-
-  // ============================================
   // Dialogs & Snackbars
   // ============================================
 
@@ -245,9 +166,12 @@ extension ContextExtensions on BuildContext {
         title: Text(title),
         content: Text(message),
         actions: [
-          TextButton(onPressed: () => pop(false), child: Text(cancelText)),
           TextButton(
-            onPressed: () => pop(true),
+            onPressed: () => Navigator.pop(this, false),
+            child: Text(cancelText),
+          ),
+          TextButton(
+            onPressed: () => Navigator.pop(this, true),
             style: confirmColor != null
                 ? TextButton.styleFrom(foregroundColor: confirmColor)
                 : null,

@@ -43,3 +43,8 @@ export 'dialogs/app_snackbar.dart';
 // ICONS
 // ============================================
 export 'icons/app_icon.dart';
+
+// ============================================
+// SYSTEM
+// ============================================
+export 'system/app_navigation_bar.dart';

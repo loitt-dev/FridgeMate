@@ -76,14 +76,14 @@ class ExpiryBadge extends StatelessWidget {
       decoration: BoxDecoration(
         color: badgeColor,
         borderRadius: BorderRadius.circular(_getBorderRadius()),
-        border: Border.all(color: textColor.withOpacity(0.3), width: 0.5),
+        border: Border.all(color: textColor.withValues(alpha: 0.3), width: 0.5),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
+        spacing: _getSpacing(),
         children: [
           if (showIcon && badgeIcon != null) ...[
             Icon(badgeIcon, size: _getIconSize(), color: textColor),
-            if (showText) SizedBox(width: _getSpacing()),
           ],
           if (showText && text != null)
             Text(
